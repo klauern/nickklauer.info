@@ -1,3 +1,12 @@
-baseurl = "http://ssh.nickklauer.info:1313"
+baseurl = "http://ssh.nickklauer.info"
 languageCode = "en-us"
 title = "DevOps Confusion"
+copyright = "Copyright (c) 2015, Nick Klauer; all rights reserved."
+
+[author]
+    name = "Nick Klauer"
+    github = "klauern"
+    linkedin = ""
+    facebook = "nick.klauer"
+    gaID = ""
+    twitter = "klauern"
