@@ -1,0 +1,162 @@
+<html lang="en">
+<head>
+
+  
+  <meta charset="utf-8">
+  <title>KeyStore Explorer</title>
+  <meta name="description" content="KeyStore Explorer">
+  <meta name="author" content="Nick Klauer">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/fonts.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/normalize.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/skeleton.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/custom.css">
+
+  
+  
+  <link rel="stylesheet" href="http://blog.nickklauer.info//highlight/styles/default.css">
+  
+  <script src="http://blog.nickklauer.info//highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</head>
+<body>
+
+<header id="menu">
+  <div class="container">
+	<span class="logo">DevOps Confusion</span>
+	<a>&#9776;</a>
+  </div>
+</header>
+
+<nav class="navbar">
+  <div class="container">
+	<div class="row">
+	  <div class="eight columns offset-by-two">
+		<ul class="">
+		  
+		  <li class="u-pull-left"> <a href="http://blog.nickklauer.info/" class="brand" style="font-weight:bold;font-size:normal"> DevOps Confusion </a></li>
+		  <li class="u-pull-right cate"> <a href="http://blog.nickklauer.info//about/" class=""> About </a></li>
+		  
+		</ul>
+	  </div>
+	</div>
+  </div>
+</nav>
+
+
+<div class="container post-wrapper">
+  <div class="row">
+	<div class="eight columns offset-by-two">
+	  <div id="post-title">
+		<p class="footnote">
+		  
+		  <time class="">2012-04-18</time>
+		  
+		  
+		  
+
+		  
+
+		  
+
+		</p>
+		<h5>KeyStore Explorer</h5>
+	  </div>
+
+	  <div class="post">
+		<p>So I feel really late to the party, but I have not mucked about with java keystores much. However, when I did, I spent most of that time wincing in virtual pain having to figure out what magical command-line incantations will let me add/remove/modify certificates on the keystore.</p>
+
+<p>Enter the KeyStore Explorer - <a href="http://www.lazgosoftware.com/kse/index.html">http://www.lazgosoftware.com/kse/index.html</a></p>
+
+<p>This is a GUI to modify your Java keystores. So if you’re like me and having to work with an app server that has rolling certificates coming in and out, you either</p>
+
+<ol>
+<li><p>automate it</p></li>
+
+<li><p>simplify it</p></li>
+</ol>
+
+<p>This aims to meet #2.</p>
+
+<p>For example, I had to update a certificate store for a weblogic server. In particular, one of the certs changed on me and stopped working. I just open up the .jks file, enter the password for it, and</p>
+
+<p>see what’s going on.</p>
+
+<p><a href="http://klauer.files.wordpress.com/2012/04/image001.png"><img src="http://klauer.files.wordpress.com/2012/04/image001.png" alt="" />
+</a></p>
+
+<p>For my fix, I noticed that the certificate serial number didn’t match what the server popped up. You can open a certificate to see the serial number, and other details:</p>
+
+<p><a href="http://klauer.files.wordpress.com/2012/04/image002.png"><img src="http://klauer.files.wordpress.com/2012/04/image002.png" alt="" />
+</a></p>
+
+<p>All in all, it makes examining a keystore easier. Check it out.</p>
+
+<p>Download link - <a href="http://www.lazgosoftware.com/kse/downloads.html">http://www.lazgosoftware.com/kse/downloads.html</a></p>
+
+	  </div>
+	</div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="container">
+	<div class="row">
+	  <div class="ten columns offset-by-two">
+		<p class="footnote">
+		  
+		  Copyright (c) 2015, Nick Klauer; all rights reserved.
+		  
+		  
+		  Find me at
+
+		  
+		  <a href="https://github.com/klauern" >GitHub</a>
+		  
+
+		  
+		  <a href="https://www.facebook.com/nick.klauer">Facebook</a>
+		  
+
+		  
+		  <a href="https://twitter.com/klauern">Twitter</a>
+		  
+
+		  
+
+		  
+		</p>
+	  </div>
+	</div>
+  </div>
+</div>
+
+
+<script src="http://blog.nickklauer.info//js/jquery.min.js" type="text/javascript"></script>
+<script src="http://blog.nickklauer.info//js/jquery.timeago.js" type="text/javascript"></script>
+<script type="text/javascript">
+  $(function(){
+    $("time.timeago").timeago();
+  })
+  $("#menu").click(function(){
+    $(".brand").text("HOME");
+    $(".navbar ul li").removeClass("cate");
+    $(".navbar").toggle();
+  });
+  $(window).resize(function(){
+    if(window.innerWidth > 768) {
+      $(".navbar").removeAttr("style");
+    }
+  });
+</script>
+
+</body>
+</html>
+

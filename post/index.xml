@@ -1,0 +1,818 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on DevOps Confusion</title>
+    <link>http://blog.nickklauer.info/post/</link>
+    <description>Recent content in Posts on DevOps Confusion</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright (c) 2015, Nick Klauer; all rights reserved.</copyright>
+    <lastBuildDate>Thu, 28 Mar 2013 20:10:39 +0000</lastBuildDate>
+    <atom:link href="http://blog.nickklauer.info/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Where&#39;s the challenge?</title>
+      <link>http://blog.nickklauer.info/post/2013/wheres-the-challenge/</link>
+      <pubDate>Thu, 28 Mar 2013 20:10:39 +0000</pubDate>
+      
+      <guid>http://blog.nickklauer.info/post/2013/wheres-the-challenge/</guid>
+      <description>&lt;p&gt;&amp;ldquo;I&amp;rsquo;ve researched the options and come to the conclusion&amp;hellip;&amp;rdquo;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;without showing the evidence&lt;/li&gt;
+&lt;li&gt;without comparing the options beyond a couple bullet points discussed in a previous meeting
+-without sharing anything gathered other than your decision.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I&amp;rsquo;m more irked that someone can write this and be taken seriously without more criticism or analysis expected of them.&lt;/p&gt;
+
+&lt;p&gt;With this particular issue, we&amp;rsquo;ve discussed the options endlessly, and to have it boil down to someone highlighting two or three bullet points that we&amp;rsquo;d already talked about, just reinforces the lack of rigor and frankly professionalism I&amp;rsquo;ve gotten tired of seeing.  People are too comfortable with what&amp;rsquo;s right in their face, and lack in my opinion the discipline to highlight pros and cons of options.  They don&amp;rsquo;t even look beyond the simple things we don&amp;rsquo;t need compared.&lt;/p&gt;
+
+&lt;p&gt;If I were researching cars,I would factor all of the things I do with the car and how I plan to use it to make a decision.  With this &amp;ldquo;thorough&amp;rdquo;analysis, it&amp;rsquo;s like they focussed simply on safety ratings, prioritizing that over every other combination of features.  You&amp;rsquo;ll get a safe car, but wing be able to fit your kids in the back seat because you overlooked the real need to fit car seats in the back. This is what distracts me from doing work, because of the lack of rigor or actual analysis I would expect others to do. It&amp;rsquo;s not to say I would make a better choice, but I would leave you with little doubt &lt;strong&gt;why&lt;/strong&gt; I picked what I did, because all of the things I used to make the decision would be there.&lt;/p&gt;
+
+&lt;p&gt;I look at what I present as something to expect criticism, and I could easily tear this to shreds because of an obvious lack of analysis done by the person presenting it.&lt;/p&gt;
+
+&lt;p&gt;I give up.  If this is what counts as thorough analysis, I&amp;rsquo;m going to have to look elsewhere to surround myself with people that will push the status quo further and challenge me. I&amp;rsquo;m certainly not feeling like there is anyone here to challenge it.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Stopping an EJB Programmatically</title>
+      <link>http://blog.nickklauer.info/post/2012/stopping-an-ejb-programmatically/</link>
+      <pubDate>Tue, 23 Oct 2012 19:58:43 +0000</pubDate>
+      
+      <guid>http://blog.nickklauer.info/post/2012/stopping-an-ejb-programmatically/</guid>
+      <description>&lt;p&gt;Below is a small story and a snippet or two of code to shut down an EJB programmatically. However, I hope that by posting what I did to dig in to this, I can show how you can use JMX and MBeans to your advantage programmatically for _any_MBean.&lt;/p&gt;
+
+&lt;p&gt;In looking at &lt;a href=&#34;http://docs.oracle.com/javase/6/docs/technotes/guides/visualvm/index.html&#34;&gt; JVisualVM&lt;/a&gt; (bundled with all JDK’s since recent Java 6 updates), I opened up the Glassfish server and looked up the MBeans that are deployed out there. The project I’m working with (and the class name) is &lt;strong&gt;VendorUpdateToTREES&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://klauer.files.wordpress.com/2012/10/image001.png&#34;&gt;&lt;img src=&#34;http://klauer.files.wordpress.com/2012/10/image001.png&#34; alt=&#34;&#34; /&gt;
+&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;In this bean, there’s another sub-bean:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://klauer.files.wordpress.com/2012/10/image002.png&#34;&gt;&lt;img src=&#34;http://klauer.files.wordpress.com/2012/10/image002.png&#34; alt=&#34;&#34; /&gt;
+&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Its name is:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://klauer.files.wordpress.com/2012/10/image003.png&#34;&gt;&lt;img src=&#34;http://klauer.files.wordpress.com/2012/10/image003.png&#34; alt=&#34;&#34; /&gt;
+&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Note the only difference between the two is the &lt;strong&gt;servermgt=true&lt;/strong&gt; field.&lt;/p&gt;
+
+&lt;p&gt;If you were to look at both beans, one shows controls the EJB itself, while the &lt;strong&gt;servermgt&lt;/strong&gt; bean appears to control topics and queues. We won’t be needing that functionality, so we need to be sure to exclude this bean.&lt;/p&gt;
+
+&lt;p&gt;Now, on to the code:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://klauer.files.wordpress.com/2012/10/image004.png&#34;&gt;&lt;img src=&#34;http://klauer.files.wordpress.com/2012/10/image004.png&#34; alt=&#34;&#34; /&gt;
+&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Some reference bits:&lt;/p&gt;
+
+&lt;p&gt;Sets#filter, is from Google Guava: &lt;a href=&#34;http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Sets.html#filter(java.util.Set,%20com.google.common.base.Predicate&#34;&gt; http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Sets.html#filter(java.util.Set, com.google.common.base.Predicate)&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;ObjectNameStartsWithFilter, is a Predicate object that I implemented to do one simple thing: filter out ObjectNames that don’t start with the parameter passed in:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://klauer.files.wordpress.com/2012/10/image005.png&#34;&gt;&lt;img src=&#34;http://klauer.files.wordpress.com/2012/10/image005.png&#34; alt=&#34;&#34; /&gt;
+&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;That’s about as easy as a Predicate can get. Note that &lt;strong&gt;User:Name=&lt;/strong&gt; is part of the name for our EJB:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://klauer.files.wordpress.com/2012/10/image006.png&#34;&gt;&lt;img src=&#34;http://klauer.files.wordpress.com/2012/10/image006.png&#34; alt=&#34;&#34; /&gt;
+&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So, while I showed how I found the name to the MBean, the code to shut it down should be simple enough to copy/paste with no changes to &lt;strong&gt;any&lt;/strong&gt; EJB deployed in Glassfish. I don’t know exactly how the MBeans look on Tomcat, WebLogic, or others, but the same principle applies in how it would be structured, so you could easily adapt this to other containers.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Book Review: The Information Diet by Clay Johnson</title>
+      <link>http://blog.nickklauer.info/post/2012/book-review-the-information-diet-by-clay-johnson/</link>
+      <pubDate>Sat, 20 Oct 2012 03:19:55 +0000</pubDate>
+      
+      <guid>http://blog.nickklauer.info/post/2012/book-review-the-information-diet-by-clay-johnson/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://photo.goodreads.com/books/1327911076l/12799077.jpg&#34; alt=&#34;&#34; /&gt;
+ tl;dr -  Overall &lt;sup&gt;3&lt;/sup&gt;&amp;frasl;&lt;sub&gt;5&lt;/sub&gt;.  I don&amp;rsquo;t know if I would really recommend this to anybody I know, but I&amp;rsquo;m sure this will be new information for someone.&lt;/p&gt;
+
+&lt;p&gt;The premise of the book is simple.  You know that some foods are bad for you because they&amp;rsquo;re mostly junk food.  They are there for your enjoyment, but do little other than hurt your heatlh.  Eating fast food every day is a sure way to obesity and high cholesterol. These kinds of things aren&amp;rsquo;t mysteries.  We still enjoy those foods, but we also know that there are good foods to eat, such as fresh vegetables, fruits, and minimizing intakes of salt, etc.&lt;/p&gt;
+
+&lt;p&gt;How about taking that same metaphor towards the information you consume?  Lots of information out there is junk posing as good for you.  This book helps to identify that divide between what is merely &lt;strong&gt;affirmation&lt;/strong&gt; news as opposed to &lt;strong&gt;information&lt;/strong&gt; news.  Does it challenge your viewpoint, or reinforce biases you already have?&lt;/p&gt;
+
+&lt;p&gt;I breezed through this book on a short drill weekend in the few hours before I fell asleep.  It probably took me 4 - 5 hours tops to read it, with distractions (~150 pages).  What this book does is book-ify a metaphor, and try to fill it with content for 150 pages. Ironically, for a book about being a conscious consumer of information, the writing lacked focus and depth.&lt;/p&gt;
+
+&lt;p&gt;I was really excited to read this book because I was hoping to get alot of good tools out of it for both impacting how I consume information, as well as tools for helping others change how they interpret their own.  I got neither out of it, mostly because I know that sites like the Huffington Post and Drudge Report (as well as the TV versions MSNBC, Daily Show, and Fox News) all lack credibility in my mind in doing much more than entertaining me.&lt;/p&gt;
+
+&lt;p&gt;If you want to read this book, go ahead.  It&amp;rsquo;s not going to take too long.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Resources for Learning Datomic/Datalog</title>
+      <link>http://blog.nickklauer.info/post/2012/resources-for-learning-datomicdatalog/</link>
+      <pubDate>Thu, 18 Oct 2012 03:14:51 +0000</pubDate>
+      
+      <guid>http://blog.nickklauer.info/post/2012/resources-for-learning-datomicdatalog/</guid>
+      <description>
+
+&lt;p&gt;Okay, so there&amp;rsquo;s alot of talk about NoSQL, and as you would rightly guess, everybody has thrown their implementation in the ring.  I think out of most of them, &lt;a href=&#34;http://www.datomic.com&#34;&gt;Datomic&lt;/a&gt; is one of the more unique entries in the field.&lt;/p&gt;
+
+&lt;p&gt;However, it&amp;rsquo;s hard for me (and probably anyone with SQL knowledge) to really understand what makes Datomic useful or anything more than an incremental improvement at the cost of eschewing SQL as a querying language (well, that was my initial thought at the time&amp;ndash;it&amp;rsquo;s changed since then).&lt;/p&gt;
+
+&lt;p&gt;I think that with the recent release of &lt;a href=&#34;http://blog.datomic.com/2012/10/codeq.html&#34;&gt;codeq&lt;/a&gt;, the guys behind Datomic are trying to point out the usefulness and simplicity of their database model, and make it accessible to a larger audience.&lt;/p&gt;
+
+&lt;p&gt;Now, what do you want to learn to understand codeq?  Well, you could start by reading the blog post about it:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.datomic.com/2012/10/codeq.html&#34;&gt;http://blog.datomic.com/2012/10/codeq.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;After that, you might want to get Datomic installed and running on your system.  I&amp;rsquo;d recommend downloading the free edition for tinkering: &lt;a href=&#34;http://downloads.datomic.com/free.html&#34;&gt;http://downloads.datomic.com/free.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Once you have it downloaded, you&amp;rsquo;ll probably want to understand how to get it running.  The &lt;a href=&#34;https://github.com/Datomic/codeq#codeq&#34;&gt;codeq README&lt;/a&gt; has that wrapped up.  It links to the &lt;a href=&#34;http://docs.datomic.com/getting-started.html&#34;&gt;Datomic Getting Started&lt;/a&gt; page to understand how to get it running.  It couldn&amp;rsquo;t be easier than this, though:&lt;/p&gt;
+
+&lt;blockquote&gt;
+
+&gt;     
+&gt;     $ cd /wherever-you-extracted-datomic/
+&gt;     $ bin/transactor
+&gt;     ... watch it start up
+&gt; 
+&gt; 
+&lt;/blockquote&gt;
+
+&lt;p&gt;Installing codeq is explained &lt;a href=&#34;https://github.com/Datomic/codeq#usage&#34;&gt;on their site, too&lt;/a&gt;, although it would be nice for them to supply a runnable .jar instead of asking for everyone to install &lt;a href=&#34;https://github.com/technomancy/leiningen&#34;&gt;Leiningen&lt;/a&gt; and run &lt;code&gt;**lein uberjar**&lt;/code&gt;, but it&amp;rsquo;s simple enough if you&amp;rsquo;re into Clojure.&lt;/p&gt;
+
+&lt;p&gt;Now, to review, the steps to get up-and-running with Codeq and a git repo (Clojure-based at the moment) of your choice are:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://www.datomic.com/get-datomic.html&#34;&gt;Get Datomic installed&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://docs.datomic.com/getting-started.html&#34;&gt;Start the Datomic transactor&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/Datomic/codeq#usage&#34;&gt;build Codeq&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/Datomic/codeq#usage&#34;&gt;run Codeq on your git repo&lt;/a&gt; and&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;import it into Datomic&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;You&amp;rsquo;ll probably wonder what the heck to do next, such as how to query it.  Here&amp;rsquo;s a couple links that got me started:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://docs.datomic.com/query.html&#34;&gt;Querying Tutorial&lt;/a&gt; for Datalog in Datomic&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://gist.github.com/2645453&#34;&gt;Datalog examples using Clojure data structures itself&lt;/a&gt; (this alone makes datalog useful for Clojure coding as you don&amp;rsquo;t even need Datomic in some cases to use it)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/jonase/codeq/blob/queries/src/datomic/codeq/examples.clj&#34;&gt;code examples&lt;/a&gt; from this &lt;a href=&#34;https://groups.google.com/d/msg/datomic/Xx2nLvCl4s4/y6LQPO7xyCgJ&#34;&gt;google group post&lt;/a&gt; querying some git internals&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Finally, looking at the &lt;a href=&#34;http://cloud.github.com/downloads/Datomic/codeq/codeq.pdf&#34;&gt;codeq git schema&lt;/a&gt; might make some sense for you now&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;summary:cb61d1c5d66dacaffff486163f948935&#34;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;It would be nice if this was pre-packaged, but it&amp;rsquo;s only a week old, so I have hopes that this will come along pretty quickly.&lt;/p&gt;
+
+&lt;p&gt;I actually wouldn&amp;rsquo;t be surprised if someone decides to do something akin to what &lt;a href=&#34;http://rubydoc.info/&#34;&gt;rubydoc.info&lt;/a&gt; does for documentation.  Rubydoc.info will generate YARD documentation for all of the gems in rubygems, as well as many Github projects, too.  This is a great resource, and it&amp;rsquo;s done because it&amp;rsquo;s simple enough to just run the same documentation tool against all of the same kinds of projects.&lt;/p&gt;
+
+&lt;p&gt;With codeq, all that&amp;rsquo;s needed to index a project is: 1) a Clojure project 2) backed by git.  You could probably do that for most of the projects on Clojars.org if they specify a Git repo, and then provide some front-end site that would have common queries (as seen by some of the code examples in codeq so far).  The great thing about codeq is that since the schema is the same across all git repos, useful queries and very portable across projects, and so it makes perfect sense for those kinds of queries to be reused.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>A Quick Look at edn</title>
+      <link>http://blog.nickklauer.info/post/2012/a-quick-look-at-edn/</link>
+      <pubDate>Sat, 08 Sep 2012 02:36:32 +0000</pubDate>
+      
+      <guid>http://blog.nickklauer.info/post/2012/a-quick-look-at-edn/</guid>
+      <description>&lt;p&gt;I code in Clojure in my free time. It has a nice set of features and syntax that is a vast simplification and improvement over Java. I&amp;rsquo;m also a pretty big fan of the JVM and it&amp;rsquo;s wealth of libraries and such, so having Clojure run on the JVM makes using Clojure a lot easier.  Anyways, something about Clojure that I found pretty easy to transition to was Clojure&amp;rsquo;s set of data literals.  Things like Maps being defined within {}, sets in #{}, lists as (), and vectors as [] is pretty consistent with Java and actually alot closer to Ruby (another of my favorite languages).&lt;/p&gt;
+
+&lt;p&gt;So having just read about Rich Hickey releasing a data format based largely on a superset of Clojure&amp;rsquo;s data types, I was pretty excited:&lt;/p&gt;
+
+&lt;p&gt;[tweet &lt;a href=&#34;https://twitter.com/swannodette/status/243866691728183298&#34;&gt;https://twitter.com/swannodette/status/243866691728183298&lt;/a&gt;]&lt;/p&gt;
+
+&lt;p&gt;Alot of people I&amp;rsquo;ve read so far are comparing it to JSON, which is probably pretty close.  Here are a couple of things I think improve upon how people use JSON and what makes edn better as a data interchange format:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;namespaced symbols.  These alone make hashmaps and sets easier to parse and define uniqueness.  I suppose you could get by with &amp;ldquo;string&amp;rdquo; everywhere, but anything you&amp;rsquo;d do in a &amp;ldquo;string&amp;rdquo; you&amp;rsquo;d have to implement a parser for more complex logic on either side.   For instance, namespacing your keywords and symbols like so:[sourcecode language=&amp;ldquo;clojure&amp;rdquo;]
+{ :counterparty/name :keywordval
+:counterparty/id 13850
+:counterparty/inception 1930 }
+[/sourcecode]&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;allows you to be alot more flexible in your data, and since it&amp;rsquo;s built in to the spec, there would be no extra work involved in using it.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;tagged elements&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Defining your own types that can be interpreted reminded me of Thrift and Protocol Buffers, although I think their implementations were meant more for computer-computer communication moreso than computer-person-computer or some variant thereof.&lt;/p&gt;
+
+&lt;p&gt;This could be ported to Java and other languages pretty easily, and I think it marks the state of the next data format.  Even if edn doesn&amp;rsquo;t make it, it shows where JSON needs to improve, if it ever can.  Many can speculate why JSON became popular, but I attribute it to two things:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;JSON is based on Javascript, and Javascript is the defacto language on the web simply because all browsers support it and nothing else.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;JSON is more readable than XML to the human eye.  That said, I&amp;rsquo;ve never understood why XML was ever used for anything a developer or user would write for, as that was never it&amp;rsquo;s intent.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;JSON does lack specific features from edn which I think would put JSON more on par with alot of developers needs.&lt;/p&gt;
+
+&lt;p&gt;All in all, I like this, and hope that it picks up some momentum in use.  I will definitely be keeping an eye out for future use of it.&lt;/p&gt;
+
+&lt;p&gt;If you&amp;rsquo;d like to follow along with what alot of people are also thinking about the edn specification, the &lt;a href=&#34;https://groups.google.com/d/topic/clojure/aRUEIlAHguU/discussion&#34;&gt;Clojure Google Group&lt;/a&gt; has a pretty lively discussion going on right now.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Want to help people with Clojure? Subscribe to StackOverflow&#39;s Tag</title>
+      <link>http://blog.nickklauer.info/post/2012/want-to-help-people-with-clojure-subscribe-to-stackoverflows-tag/</link>
+      <pubDate>Mon, 30 Jul 2012 01:43:32 +0000</pubDate>
+      
+      <guid>http://blog.nickklauer.info/post/2012/want-to-help-people-with-clojure-subscribe-to-stackoverflows-tag/</guid>
+      <description>
+
+&lt;p&gt;One of the neat things I found out about StackOverflow is that it can collect up and present you an email summary every day with questions that fit some search of yours.  In my case, I created a daily email to send me questions related to Clojure across all of StackOverflow&amp;rsquo;s sites:&lt;/p&gt;
+
+&lt;h2 id=&#34;http-stackexchange-com-filters-45983-clojure:ba0024f16780a01bf3034d863148d538&#34;&gt;&lt;a href=&#34;http://stackexchange.com/filters/45983/clojure&#34;&gt;http://stackexchange.com/filters/45983/clojure&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;I&amp;rsquo;ve been subscribed to this for a while, and I find it incredibly useful.  I think alot of people forget that users aren&amp;rsquo;t comfortable using IRC to ask questions, or think the mailing list is for the geeks-only crowd, and I find that Stackoverflow seems like one of those sites that&amp;rsquo;s more approachable for your &amp;lsquo;average joe&amp;rsquo; user, or at least alot of people who think they are just &amp;lsquo;average&amp;rsquo;.&lt;/p&gt;
+
+&lt;p&gt;Contribute, subscribe, rejoice. :)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Stack Ranking is Absurd...unless you happen to be weeding officers out of the military</title>
+      <link>http://blog.nickklauer.info/post/2012/why-stacked-ranking-is-absurd-in-the-workplace-but-might-be-okay-for-indoctrination/</link>
+      <pubDate>Thu, 05 Jul 2012 14:00:24 +0000</pubDate>
+      
+      <guid>http://blog.nickklauer.info/post/2012/why-stacked-ranking-is-absurd-in-the-workplace-but-might-be-okay-for-indoctrination/</guid>
+      <description>
+
+&lt;p&gt;So I found this really interesting article about &lt;a href=&#34;http://stevegall.wetpaint.com/page/Human+Resource+Management&#34;&gt;&amp;ldquo;Stacked Ranking&amp;rdquo; employees at Microsoft&lt;/a&gt; from one of Zed Shaw&amp;rsquo;s tweets, and it reminded me of something:&lt;/p&gt;
+
+&lt;p&gt;[tweet &lt;a href=&#34;https://twitter.com/klauern/status/220704644861657088&#34;&gt;https://twitter.com/klauern/status/220704644861657088&lt;/a&gt; align=&amp;lsquo;center&amp;rsquo;]&lt;/p&gt;
+
+&lt;p&gt;I can tell you a thing or two about how I participated in this minor experiment while in the military.&lt;/p&gt;
+
+&lt;h2 id=&#34;stacked-ranking-at-ocs:c6074c9ccb4db6afe563e0233086de4b&#34;&gt;Stacked Ranking at OCS&lt;/h2&gt;
+
+&lt;p&gt;My experience with stacked ranking comes from a time long ago when I was attending an officer candidate school for the Marine Corps.  I was probably 21 at the time, and had just recently finished boot camp to become an enlisted Marine in the Reserves.  This was all part of my plan, of course, to get the enlisted experience under my belt before stepping in to the officer world.  I thought, &amp;ldquo;I want to be an officer in the Marine Corps, I should try to do something to gain some respect first&amp;rdquo;, and joined the Marines enlisted.&lt;/p&gt;
+
+&lt;p&gt;Anyways, with my almost inconsequential level of experience in the military (probably less than 9 months) I attended one of the most difficult courses that I have ever heard about, witnessed, or will ever likely face again: &lt;a href=&#34;http://officer.marines.com/marine/making_marine_officers/officer_candidates_school&#34;&gt;Officer Candidate School&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This course can vary in length, depending on the route you take to get there.  People in college in the ROTC program attend a 8- or 10-week course, while other types of groups face a 10- or 2 separate 6-week courses.  I was in the latter camp.  This program is called PLC or &lt;a href=&#34;http://officer.marines.com/marine/making_marine_officers/commissioning_programs/platoon_leaders_class&#34;&gt;Platoon Leaders Class&lt;/a&gt;.  It is spread out over two summers, whereby you go through hell the first summer 6-week program to partially graduate so you can attend the second 6-week course that&amp;rsquo;s harder than the first.  It&amp;rsquo;s not easy. It puts a toll on your physical ability, endurance, decision making skills, and is generally a way to weed out people that won&amp;rsquo;t make decisions in stressful situations.&lt;/p&gt;
+
+&lt;p&gt;I attended the first of the two courses, where you really find that there are people of all walks of life wanting to be an officer in the Marine Corps.  The requirement for Officers is a 4-year bachelor degree, a set minimum GPA (varies depending on the need), and to be able to pass a physical fitness test by some score.  There is no mental test, SAT score, acceptance criteria, etc., besides this, so you will often find that someone from some random university (such as mine: &lt;a href=&#34;http://www.uwplatt.edu/&#34;&gt;University of Wisconsin-Platteville&lt;/a&gt;) working side-by-side with people in completely other classes of ivy league (Rutgers, Harvard, USC, Yale, Notre Dame, Big-10 schools, etc.).  Most of these people aren&amp;rsquo;t here because they were curious: leadership is what they were sold on, and they&amp;rsquo;re here to prove to themselves they can do it.  You immediately find yourself among people generally more physically fit, competent, and capable than most people you have ever seen before.  If you felt like a big fish in a small pond, you find yourself to be very humbled to be working next to these people.&lt;/p&gt;
+
+&lt;p&gt;So this course is 6-weeks, meaning that you generally get about 5 hours of sleep a night for 6 straight weeks.  There are some minor allowances given to you after three weeks in, but by that point, you&amp;rsquo;re so used to the rhythm or lack of sleep you&amp;rsquo;ll just use those 12 hour freedom periods as catchup for sleep.  Most of this course is meant more to test you and validate that you&amp;rsquo;re capable of being an officer.  In the enlisted side, you sign a contract for 4 or 6 years before you even go to bootcamp, so the expectation from the get-go is that &amp;ldquo;we&amp;rsquo;ve got your ass for X years, we&amp;rsquo;ll drag you across the finish line to get there&amp;rdquo;.  Your commitment was decided on paper, and the government will hold you to that.  That&amp;rsquo;s not the case at all with officer candidate school.  Officers are the ones held ultimately responsible for all actions in batte, war, logistics, and running the show.  They decide what happens, while the enlisted side makes sure it does happen.  Because of this, most contracts aren&amp;rsquo;t signed until after verifying you&amp;rsquo;re competent, which means passing OCS.  There&amp;rsquo;s a reason it&amp;rsquo;s called a &amp;ldquo;candidate&amp;rdquo; school, and it&amp;rsquo;s more a test to weed you out from the less likely and less useful peers.  Doing this is one day is not uncommon:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;wake up at 5AM&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;get dressed for PT by 5:10&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;stretching for PT by 5:30&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;running 4, 5 miles&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;some team building exercise, with an emphasis on this being exercise&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;cool down&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;breakfast&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;done by 7&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;dressed for the day of training&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;some classes in the morning&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;run to lunch&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;run back to classes&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;more tests, questions berating of your ability, knowledge, and decision-making skills throughout the day&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;evening chow&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;clean up&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;test, study, prep for next day&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;lights out at 10PM&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;wake up for fire watch for an hour at 1AM&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;do laundry&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;finish fire watch at 2AM&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;go to bed at 2:15&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;wake up at 5 again&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Repeat.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;m a bit off-topic at this point, but let it be known that OCS is not an easy course, and the entire time, you&amp;rsquo;re being tested, vetted, and observed like a lab rat to see if you&amp;rsquo;ll get to the piece of cheese in the requisite amount of time or not.  as part of these ongoing classes, tests, etc., the instructors of the course are always critiquing you, testing your ability to retain knowledge quickly and recite, repeat, and train others in the same, and evaluated frequently on your small-unit and large-unit leadership skills.&lt;/p&gt;
+
+&lt;p&gt;One of the big tests that happens at the end is the &amp;ldquo;Peer Review&amp;rdquo; session, whereby each candidate in your area is handed a sheet numbered 1-100.  You rank the names of everybody besides you on them, offering a comment or two if you think they deserve something.  The guy you think is the best, put him at #1.  The worst? #100 (or whatever the size of your platoon or class).&lt;/p&gt;
+
+&lt;p&gt;When this is over, you hand this in, totals are gathered, and you&amp;rsquo;re brought in individually to see your instructors about your score.&lt;/p&gt;
+
+&lt;p&gt;When you&amp;rsquo;re dealing with a group of people that are often heads and shoulders above your peers in any other place, you find really quickly where you fit in the grand scheme of things.  A lower third rank in this group is devastating, mostly because you know that the people that graded you are also your friends and worked with you these 4 or 5 long weeks together day-in, day-out.  It&amp;rsquo;s much, &lt;strong&gt;much&lt;/strong&gt; harder to receive a low or middling score from your peers than it is to receive it from your &amp;lsquo;boss&amp;rsquo;.&lt;/p&gt;
+
+&lt;h2 id=&#34;how-does-this-relate-to-microsoft-s-stack-rank-method:c6074c9ccb4db6afe563e0233086de4b&#34;&gt;How does this relate to Microsoft&amp;rsquo;s Stack Rank method?&lt;/h2&gt;
+
+&lt;p&gt;What I see that differs from the stack rank method that is being described in that HR document attached above and what I did here, is the visibility and transparency of it all.  In Microsoft&amp;rsquo;s version, the game is similar, but it&amp;rsquo;s held in groups of managers above you behind closed doors.  The only number you see at the end of the process is something vary blank like &amp;ldquo;3.0&amp;rdquo; meaning &amp;ldquo;middle quartile&amp;rdquo; or whatnot, instead of &amp;ldquo;ranked #30 out of #70 by your peers&amp;rdquo;.  I cannot fathom how management can pretend it&amp;rsquo;s even close to being fair when you take out the peer part of it, leaving the decision making to team managers that likely have no experience of anybody other than their own team and their ability (or lack of ability) to argue and barter their team member&amp;rsquo;s places among the heap.&lt;/p&gt;
+
+&lt;p&gt;What I found out about my experience was probably more insightful for my own sake than anything else could have been.  It&amp;rsquo;s one thing to be told by your instructors that you&amp;rsquo;re so-so when they&amp;rsquo;re grading you: they have a limited field of view of your accomplishments and capabilities.  You can easily write their negative appraisals off as being close-minded, lacking any real experience, or just plain bad.&lt;/p&gt;
+
+&lt;p&gt;When you&amp;rsquo;re reviewed by your peers, it&amp;rsquo;s all laid bare.  These are the people that you spent every waking minute with for the past 6 weeks.  Their opinion is about as good as you can hope to get.  If they dont think you&amp;rsquo;re awesome, it&amp;rsquo;s likely because either:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;a. you&amp;rsquo;re not, or&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;b. you failed to show them what you really were capable of&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I think this gives you an incredibly strong feeling about your own ability.  You can think you&amp;rsquo;re the best thing ever, but if a peer-review of your 70 closest teammates can&amp;rsquo;t make that same judgement, there&amp;rsquo;s little doubt the problem with that lies in you and you alone.  Blaming them all for &amp;ldquo;not getting me&amp;rdquo; or &amp;ldquo;missing what I can do&amp;rdquo; is completely missing the point.  They all saw you.  They all knew what you were doing, trying to do, or failed to do.  There just weren&amp;rsquo;t enough people who thought you were hot shit to outweigh the rest that thought otherwise.&lt;/p&gt;
+
+&lt;p&gt;One of the phrases that I often attribute to great leadership is &amp;ldquo;command presence&amp;rdquo; as it was shown to me time and again at this place.  When someone with &amp;ldquo;command presence&amp;rdquo; walks in to a room, they are given attention and deference.  There are ways to learn this, probably, but many of the best leaders were also ones that could get a group of people to listen to them without raising their voice or pulling their rank around.&lt;/p&gt;
+
+&lt;h2 id=&#34;is-stack-ranking-worth-it:c6074c9ccb4db6afe563e0233086de4b&#34;&gt;Is stack ranking worth it?&lt;/h2&gt;
+
+&lt;p&gt;In the environment I was in, this method of peer review was both devastating and incredibly useful.  I knew where I stood among my peers, and the only way I could get higher in that rank would be to prove to them that I was better.  I did improve quite a bit over the course of that 6 weeks, and I thank that peer review to a good amount of it&amp;ndash;both there and in life afterwards.&lt;/p&gt;
+
+&lt;p&gt;That being said, I can&amp;rsquo;t see it working well without a huge amount of transparency and trust.  Above all else, even if you were ranked #70 out of #70 in a platoon on that peer review, you were still &amp;lsquo;one of us&amp;rsquo; or part of our team.  There were almost no people that we didn&amp;rsquo;t trust or wouldn&amp;rsquo;t protect in a time of need.  That made these peer reviews a hell of a lot easier to stomach.  I knew the guys at the bottom (I wasn&amp;rsquo;t one at the bottom, but let&amp;rsquo;s say I wasn&amp;rsquo;t in the top third, either) and they were down on themselves for a bit, it&amp;rsquo;s true.  But they did do some soul searching after that.   Some of them never returned for the second year, others did and blew it out of the water.&lt;/p&gt;
+
+&lt;p&gt;What made it different from the corporate watered-down version were a couple things.  1.  This was a candidate school, not an ongoing workplace evaluation.  This never took place more than during that time in candidate school.  The people with the lowest ranks were seldom let go, although they were certainly close to it.  2. peer ranking in this environment means the difference between life or death.  Honestly, when you&amp;rsquo;re picking your officer leaders, you have to realize that many of these guys are going to be troop leaders in the field.  These guys are making calls to send a guy out there to clear a room, interview a detainee, or inspect something funny by that bush.  The decisions that officers make lead to real life and death effects.  The last thing you want is to say everybody you went to OCS with was awesome and realize that if you didn&amp;rsquo;t rankthat guy at the bottom, he probably would be out there making bad choices or cowering in fear when the situation got rough.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Book Review: Into Thin Air by Jon Krakauer</title>
+      <link>http://blog.nickklauer.info/post/2012/book-review-into-thin-air-by-jon-krakauer/</link>
+      <pubDate>Wed, 04 Jul 2012 01:33:36 +0000</pubDate>
+      
+      <guid>http://blog.nickklauer.info/post/2012/book-review-into-thin-air-by-jon-krakauer/</guid>
+      <description>&lt;p&gt;A story about the tragic events of the 1996 Mount Everest disaster, this story as told by Jon Krakauer&amp;ndash;one of only two members to survive on his team&amp;ndash;tells in vivid detail the confusion surrounding what happened up on Mount Everest May 10-11 1996.&lt;/p&gt;
+
+&lt;p&gt;This book was a good, entertaining read about a horribly tragic story.  The 1996 Mount Everest Disaster is known to be the highest death toll in one day.  The reasons for this are many, but the author speculates that it was summed up by a few details:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Too many people summitting at the same time causing blocks and slow passage&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;An unexpected weather event struck the mountain that was not expected or forecast&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;The two teams that tried to summit&amp;ndash;one by veteran climber Rob Hall, another by rising climber Scott Fischer&amp;ndash;were possibly competing with each other for notoriety, and subsequently ignored their usual turn around time of 2PM by a wide wide margin.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.amazon.com/Into-Thin-Air-ebook/dp/B000FC1ITK/ref=sr_1_5?ie=UTF8&amp;amp;qid=1327866663&amp;amp;sr=8-5&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/516WCfinpvL._BO2,204,203,200_PIsitb-sticker-arrow-click,TopRight,35,-76_AA300_SH20_AA278_PIkin4,BottomRight,-49,22_AA300_SH20_OU01_.jpg&#34; alt=&#34;Into Thin Air : Kindle Edition&#34; /&gt;
+&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Overall, this was a good story, and I finished it in a couple days.  It was sad what happened to the people on that summit, but as I was reading it I was struck by a confusion around why people with so little experience or skill in mountain climbing, would ever attempt such a dangerous trek.  To pay $60-70K on one trip up to the summit seems high, but it also seems frustratingly stupid.&lt;/p&gt;
+
+&lt;p&gt;While I&amp;rsquo;ve been in the military, we&amp;rsquo;ve taken to training in extreme conditions on occassion.  These are labeled &amp;ldquo;training&amp;rdquo; because it exposed us to conditions were weren&amp;rsquo;t usually prepared for or skilled in, and allowed us to test our limits in the confines of a safe territory, rather than on the battlefield.&lt;/p&gt;
+
+&lt;p&gt;In none of my &amp;lsquo;training adventures&amp;rsquo; did I think it worth paying for, nor would I do it simply because I could.  I did it because I was part of a team, training for the military with the assumption that these skills would be used for war.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately, I couldn&amp;rsquo;t understand why anyone in this book wanted to do it, and I may never understand.  Tragically, both the leaders of the expedition&amp;ndash;Rob Hall and Scott Fischer&amp;ndash;were fathers or soon-to-be fathers with wives of their own at home.  Their children never saw them again, and Rob never had a chance to raise his firstborn child, as his wife was 7 months pregnant at the time of his death.&lt;/p&gt;
+
+&lt;p&gt;Nearly all of the other people who died had families and lives outside of this trip, which has doubtfully put undue stress on their families to adjust and attempt to move on.  I don&amp;rsquo; t know how I would handle it, but I doubt I could ever forgive myself for letting my spouse travel to a place for no other reason than their own personal pursuit of &lt;strong&gt;something&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;My Rating : 3.5 / 5 stars or so.  It&amp;rsquo;s a good read, albeit a tragic one.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Groovy script to clean up your maven&#39;s ~/.m2/ local repo without deleting everything</title>
+      <link>http://blog.nickklauer.info/post/2012/groovy-script-to-clean-up-your-mavens-m2-local-repo-without-deleting-everything/</link>
+      <pubDate>Wed, 16 May 2012 16:10:14 +0000</pubDate>
+      
+      <guid>http://blog.nickklauer.info/post/2012/groovy-script-to-clean-up-your-mavens-m2-local-repo-without-deleting-everything/</guid>
+      <description>&lt;p&gt;When I want to clear out some space, I end up doing &lt;strong&gt;&amp;lsquo;rm -rf ~/.m2/repository/`&lt;/strong&gt; or &lt;strong&gt;&amp;lsquo;del -Recurse -Force ~/.m2/&lt;/strong&gt;repository&amp;rsquo; but that tends to remove EVERYTHING and makes your builds longer in the future. I thought this little script was pretty useful for dev work as it only clears out old SNAPSHOT versions from your repo, as well as older versions of dependencies (such as outdated JUnit deps or whatnot).&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.orange11.nl/2011/08/01/cleaning-up-your-maven-repository/&#34;&gt;http://blog.orange11.nl/2011/08/01/cleaning-up-your-maven-repository/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The gist of it is that this is a Groovy script to delete out&amp;ndash;per your configuration of the script&amp;ndash;X number of days back of SNAPSHOT releases and older versions of libraries where a newer one has existed for Y days.&lt;/p&gt;
+
+&lt;p&gt;It&amp;rsquo;s probably best to just read the post above, but if you aren&amp;rsquo;t one of those types to spend time doing that, you can skip the rigmarole and just download the script:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/jettro/small-scripts/blob/master/groovy/CleanDir.groovy&#34;&gt;https://github.com/jettro/small-scripts/blob/master/groovy/CleanDir.groovy&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Mind you, you still need to read the script and set your # of days to keep, especially the line that says:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;def dryRun = true&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;To say something like &lt;strong&gt;&amp;lsquo;false&amp;rsquo;&lt;/strong&gt; so it actually does something. ;)&lt;/p&gt;
+
+&lt;p&gt;Here’s a run of mine (albeit not my actual ~/.m2 folder, but it shows that it works):&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;C:\mydocs\Downloads&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;&amp;gt; **C:\Java\Groovy\groovy-1.8.6\bin\groovy.exe CleanDir.groovy**&lt;/code&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;About the clean a maven repository&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Start cleaning at path: &lt;code&gt;C:\Documents and Settings\A03182\.m2\repository&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Remove all snapshots that are older than 60 days&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Remove all versions that are older than 90 days and do have a higher version available&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;We are going to do a dry run&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;We only remove snapshots, no versioned artifacts are deleted&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Total size cleaned is 35k&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;About to remove directory C:\Documents and Settings\A03182.m2\repository\net\sfalxa\jlatexmath\1.9.1-SNAPSHOT with total size 1878 and 124 days old&lt;/p&gt;
+
+&lt;p&gt;About to remove directory C:\Documents and Settings\A03182.m2\repository\org\clojars\bmabey\congomongo\1.1.2-SNAPSHOT with total size 6089 and 124 days old&lt;/p&gt;
+
+&lt;p&gt;About to remove directory C:\Documents and Settings\A03182.m2\repository\org\clojars\somnium\clojure-db-object\1.1.1-SNAPSHOT with total size 4368 and 124 days old&lt;/p&gt;
+
+&lt;p&gt;About to remove directory C:\Documents and Settings\A03182.m2\repository\org\clojars\somnium\mongo-java-driver\1.1.0-SNAPSHOT with total size 4576 and 124 days old&lt;/p&gt;
+
+&lt;p&gt;About to remove directory C:\Documents and Settings\A03182.m2\repository\org\clojure\clojure\1.2.0-master-SNAPSHOT with total size 1563 and 124 days old&lt;/p&gt;
+
+&lt;p&gt;About to remove directory C:\Documents and Settings\A03182.m2\repository\org\clojure\clojure-contrib\1.2.0-SNAPSHOT with total size 1567 and 124 days old&lt;/p&gt;
+
+&lt;p&gt;About to remove directory C:\Documents and Settings\A03182.m2\repository\org\danlarkin\clojure-json\1.1-SNAPSHOT with total size 4944 and 124 days old&lt;/p&gt;
+
+&lt;p&gt;About to remove directory C:\Documents and Settings\A03182.m2\repository\swank-clojure\swank-clojure\1.3.0-SNAPSHOT with total size 5537 and 124 days old&lt;/p&gt;
+
+&lt;p&gt;About to remove directory C:\Documents and Settings\A03182.m2\repository\swing\repl\swing\repl\1.0.0-SNAPSHOT with total size 5404 and 124 days old&lt;/p&gt;
+
+&lt;p&gt;Pretty neat stuff, check it out. I’ve attempted to attach the script, but I wouldn’t be surprised if it gets removed or flagged by the email filter for some reason. I cleaned up about 200MB from my repo, maybe you’ll find it’s useful for you, too.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Future of Browser Development</title>
+      <link>http://blog.nickklauer.info/post/2012/future-of-browser-development/</link>
+      <pubDate>Thu, 26 Apr 2012 04:15:27 +0000</pubDate>
+      
+      <guid>http://blog.nickklauer.info/post/2012/future-of-browser-development/</guid>
+      <description>&lt;p&gt;So I was thinking about how Javascript is the &lt;em&gt;new&lt;/em&gt; hot thing to develop on, with languages like &lt;a href=&#34;http://coffeescript.org&#34;&gt;Coffeescript&lt;/a&gt; to make it more palatable, and I wonder how long it&amp;rsquo;ll last before the dev community says &amp;lsquo;fuck this stupid shit&amp;rsquo; and move on? I think it&amp;rsquo;s already happening.  There are a couple things that triggered this.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://coffeescript.org&#34;&gt;Coffeescript&lt;/a&gt;&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;People didn&amp;rsquo;t like Javascript (or at least got tired of it&amp;rsquo;s warts), so they tried to make a Ruby-like language that &amp;lsquo;compiles&amp;rsquo; to Javascript.  In this case, you write Coffeescript and convert it to Javascript.  In most cases, you don&amp;rsquo;t have to pay much attention to he Javascript you create, and things more-or-less work. This is cool, but the tooling isn&amp;rsquo;t there yet.  I have a feeling it&amp;rsquo;ll come along as extensions to browsers start to add Coffeescript bindings or ways to map your app to the Javascript it generated better (and Chrome is already starting down that path with &lt;a href=&#34;http://www.coffeescriptlove.com/2012/04/source-maps-for-coffeescript.html&#34;&gt;source maps&lt;/a&gt;, so it might come sooner than later).&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://sencha.com&#34;&gt;Sencha&lt;/a&gt;&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.sencha.com&#34;&gt;Sencha&lt;/a&gt; is the company behind &lt;a href=&#34;http://www.sencha.com/products/extjs/&#34;&gt;ExtJS&lt;/a&gt;, which is a Javascript toolkit for building Rich UI apps.  ExtJS is a great framework itself, as it wraps up alot of nice, rich UI elements in simple Javascript widgets, with a framework to put them together.  Building on this base, Sencha has been on a roll recently, with their &lt;a href=&#34;http://www.sencha.com/products/touch&#34;&gt;Sencha Touch&lt;/a&gt; toolkit that gives users a UI kit for mobile apps that look like native apps, and now further with things like Ext Designer (now &lt;a href=&#34;http://www.sencha.com/products/architect&#34;&gt;Sencha Architect&lt;/a&gt;), which gives you a drag-and-drop interface to building your rich interface.&lt;/p&gt;
+
+&lt;p&gt;More recently, Sencha came out with &lt;a href=&#34;http://www.sencha.com/products/animator/&#34;&gt;Sencha Animator&lt;/a&gt;, which to me looks like something Adobe would have written up to create rich Flash applications.  All the while, these tools are just leveraging HTML5+JS+CSS3+ and working pretty seamlessly.  I think it&amp;rsquo;s only a matter of time that people would be experts in these tools with little to no knowledge of the underlying components.  Why not?&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/clojure/clojurescript&#34;&gt;ClojureScript&lt;/a&gt;&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;So the Clojure community came up with the idea that they could map their language to the &lt;a href=&#34;https://developers.google.com/closure/&#34;&gt;Google Closure compiler&lt;/a&gt; and provide their community a way to write Clojure on the browser.  Again, this would compile to Javascript.  There are some pretty neat things going on with the Clojure community, too, like the &lt;a href=&#34;http://clojurescriptone.com/&#34;&gt;ClojureScript One&lt;/a&gt; project and &lt;a href=&#34;http://www.kickstarter.com/projects/ibdknox/light-table&#34;&gt;Light Table&lt;/a&gt;, that provide a development environment for you in the browser.  All of which makes me think Clojure stands a chance of really shining in the years to come on the browser.&lt;/p&gt;
+
+&lt;p&gt;All of these things are neat by themselves, but taken together, you can begin to see that while we might not see browsers supporting other languages than Javascript, the developer/language communities are not going to take that sitting down, and will instead provide developers the tools they need to continue being productive in the web without having to learn Javascript.  Maybe that&amp;rsquo;s a bad thing, but I see it as being the same kind of advancement we saw with C being more-or-less a fancy compiler/converter for Assembly, and how Java became a step up from C with the addition of a GC and a managed runtime.&lt;/p&gt;
+
+&lt;p&gt;It&amp;rsquo;s interesting times, and I&amp;rsquo;m kind of excited to see how this turns out.  I don&amp;rsquo;t mind Javascript, but I certainly don&amp;rsquo;t think I want my future to be burdened with the problems of having to learn HTML+CSS+Javascript, and the idiosyncracies between MS, Apple, Google, and their varying browser support (both mobile and desktop)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>KeyStore Explorer</title>
+      <link>http://blog.nickklauer.info/post/2012/keystore-explorer/</link>
+      <pubDate>Wed, 18 Apr 2012 13:41:01 +0000</pubDate>
+      
+      <guid>http://blog.nickklauer.info/post/2012/keystore-explorer/</guid>
+      <description>&lt;p&gt;So I feel really late to the party, but I have not mucked about with java keystores much. However, when I did, I spent most of that time wincing in virtual pain having to figure out what magical command-line incantations will let me add/remove/modify certificates on the keystore.&lt;/p&gt;
+
+&lt;p&gt;Enter the KeyStore Explorer - &lt;a href=&#34;http://www.lazgosoftware.com/kse/index.html&#34;&gt;http://www.lazgosoftware.com/kse/index.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This is a GUI to modify your Java keystores. So if you’re like me and having to work with an app server that has rolling certificates coming in and out, you either&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;automate it&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;simplify it&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This aims to meet #2.&lt;/p&gt;
+
+&lt;p&gt;For example, I had to update a certificate store for a weblogic server. In particular, one of the certs changed on me and stopped working. I just open up the .jks file, enter the password for it, and&lt;/p&gt;
+
+&lt;p&gt;see what’s going on.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://klauer.files.wordpress.com/2012/04/image001.png&#34;&gt;&lt;img src=&#34;http://klauer.files.wordpress.com/2012/04/image001.png&#34; alt=&#34;&#34; /&gt;
+&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;For my fix, I noticed that the certificate serial number didn’t match what the server popped up. You can open a certificate to see the serial number, and other details:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://klauer.files.wordpress.com/2012/04/image002.png&#34;&gt;&lt;img src=&#34;http://klauer.files.wordpress.com/2012/04/image002.png&#34; alt=&#34;&#34; /&gt;
+&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;All in all, it makes examining a keystore easier. Check it out.&lt;/p&gt;
+
+&lt;p&gt;Download link - &lt;a href=&#34;http://www.lazgosoftware.com/kse/downloads.html&#34;&gt;http://www.lazgosoftware.com/kse/downloads.html&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Dropwizard: simple, self-contained RESTful web services in Java</title>
+      <link>http://blog.nickklauer.info/post/2012/dropwizard-simple-self-contained-restful-web-services-in-java-httpdropwizard-codahale-com/</link>
+      <pubDate>Thu, 15 Mar 2012 16:06:26 +0000</pubDate>
+      
+      <guid>http://blog.nickklauer.info/post/2012/dropwizard-simple-self-contained-restful-web-services-in-java-httpdropwizard-codahale-com/</guid>
+      <description>&lt;p&gt;I’ve been meaning to dig into this before, but I had some time to recently and I’m really impressed with the setup and had to share. Dropwizard is a framework for building RESTful web services in Java backed with JSON. I’m not sure for the rest of the teams, but I can speak to EMO in saying that many of their choices in libraries mirror our own or do one better:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Jersey for REST&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Jackson for JSON processing&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Jetty for in-app deployment (it can compile to a .jar that you could just run simply by typing &lt;strong&gt;java –jar app.java config.yml&lt;/strong&gt;)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;log4j for logging&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://www.jdbi.org/&#34;&gt;jdbi&lt;/a&gt; for database integration (this alone is worth looking at &lt;a href=&#34;http://www.jdbi.org/&#34;&gt;http://www.jdbi.org/&lt;/a&gt;)&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In addition to these, it has a really nice &lt;a href=&#34;http://dropwizard.codahale.com/getting-started/&#34;&gt;Getting Started&lt;/a&gt; guide that you might find fun. I was able to walk through the whole thing in an hour (including distractions, running Eclipse, Maven, etc) and have a runnable app. I’m definitely going to consider this when I need a REST service in the future.&lt;/p&gt;
+
+&lt;p&gt;In looking at how this framework behaves, it’s really a sprinkling of glue code and some special magic from Yammer to make development of these services a lot less painful. I found that it took what I was already doing, and added a few more helpers and concepts such as &lt;a href=&#34;http://dropwizard.codahale.com/manual/core/#health-checks&#34;&gt; health checks&lt;/a&gt; (which are really awesome) that make this something I would look to for development without fuss.&lt;/p&gt;
+
+&lt;p&gt;If you’re interested, check out the links, GitHub site, and examples:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://dropwizard.codahale.com/&#34;&gt;Dropwizard&lt;/a&gt; – &lt;a href=&#34;http://dropwizard.codahale.com/&#34;&gt; http://dropwizard.codahale.com/&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/codahale/dropwizard&#34;&gt;GitHub source&lt;/a&gt; – &lt;a href=&#34;https://github.com/codahale/dropwizard&#34;&gt;https://github.com/codahale/dropwizard&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/codahale/dropwizard/tree/master/dropwizard-example&#34;&gt;Example project&lt;/a&gt; – &lt;a href=&#34;https://github.com/codahale/dropwizard/tree/master/dropwizard-example&#34;&gt; https://github.com/codahale/dropwizard/tree/master/dropwizard-example&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I’m really impressed with how this is laid out, and their choices for other modules (such as using the jbdi project for database) is slick.&lt;/p&gt;
+
+&lt;p&gt;Addendum:&lt;/p&gt;
+
+&lt;p&gt;The team at &lt;a href=&#34;http://www.simple.com&#34;&gt;Simple&lt;/a&gt; (&lt;a href=&#34;http://www.simple.com&#34;&gt;http://www.simple.com&lt;/a&gt;) have been using it for their services, and one of the team &lt;a href=&#34;http://vimeo.com/37930578&#34;&gt;presented at BashoChats explaining their use of it&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Logback Logging</title>
+      <link>http://blog.nickklauer.info/post/2012/logback-logging/</link>
+      <pubDate>Thu, 01 Mar 2012 03:22:44 +0000</pubDate>
+      
+      <guid>http://blog.nickklauer.info/post/2012/logback-logging/</guid>
+      <description>
+
+&lt;p&gt;So logging is just not an attractive feature in most Java applications, so I can understand why alot of people just disregard this choice when writing a Java application.  However, when it comes to picking logging as a feature, it&amp;rsquo;s best to pick one that&amp;rsquo;s&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;simple to set up&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;grows with your app&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;sane defaults&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;configurable when it doesn&amp;rsquo;t fit the bill&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Logback is one of those choices that I&amp;rsquo;d recommend you just pick for your Java apps and worry about it later.&lt;/p&gt;
+
+&lt;p&gt;Logback is the successor to the popular Log4J library written by the same developer.  That should tell you where the developer&amp;rsquo;s spending his time.&lt;/p&gt;
+
+&lt;p&gt;So why should you pick it?  Well, to cherry-pick some bullet-points from the developer&amp;rsquo;s page on &lt;a href=&#34;logback.qos.ch/reasonsToSwitch.html&#34;&gt;why you should switch&lt;/a&gt; (highly suggest reading that over):&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Faster than log4J for some cases (10X faster)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;interops easily with SLF4J&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Documentation is very thorough (otherwise I&amp;rsquo;d not be writing this post)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;XML or Groovy config file&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;reloads config file without a restart&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;automatic file rolling, zipping, and deletion&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Anyways, it&amp;rsquo;s about as feature-packed as you could honestly want with log files.  So let&amp;rsquo;s get to configuring it out.&lt;/p&gt;
+
+&lt;p&gt;I won&amp;rsquo;t bore you with the large architecture and setup options for getting started, so let&amp;rsquo;s assume a couple things to make this easy to follow:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;You&amp;rsquo;re using Maven to build your app&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;You&amp;rsquo;ll use two appenders:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;one for debugging to &lt;strong&gt;STDOUT&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;one for logging to a file in production&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;We&amp;rsquo;ll roll these logs daily, keeping only &lt;strong&gt;30 days&lt;/strong&gt; of saved off log files.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Configuring your Logback with defaults.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s assume that you&amp;rsquo;re just starting out, and wnat to put the logger in some of your code.  This is pretty easy:&lt;/p&gt;
+
+&lt;p&gt;[sourcecode language=&amp;ldquo;java&amp;rdquo;]
+package klauer.softwarethings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;&lt;/p&gt;
+
+&lt;p&gt;public class LoggerThingy {
+  public static void main(String[] args) {&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Logger logger = LoggerFactory.getLogger(&amp;quot;klauer.softwarethings.LoggerThingy&amp;quot;);
+// The simple case is just that--simple.
+logger.debug(&amp;quot;Hello world.&amp;quot;);
+
+String some_val = &amp;quot;why not&amp;quot;;
+String some_other_val = &amp;quot;another one?&amp;quot;;
+// Instead of using String + String or some convoluted StringBuffer.append(), we can use {}&#39;s for two or less values.
+logger.debug(&amp;quot;Hello World,  I have these additional fields: {} {}&amp;quot;, some_val, some_other_val);
+
+String third_val = &amp;quot;we&#39;ll keep going&amp;quot;;
+// What do we do for three or more?  Easy:
+Object[] params = { some_val, some_other_val, third_val };
+logger.debug(&amp;quot;All of these values are here, {} {} {}&amp;quot;, params);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;}
+}
+[/sourcecode]&lt;/p&gt;
+
+&lt;p&gt;So as you might guess, it&amp;rsquo;s not terribly difficult to spruce up your code with loggers.  Note that the &lt;code&gt;LoggerFactory&lt;/code&gt; is taking a String from which I put in my class name, but you have the flexibility to take any structure of logging you want. Logback includes a hierarchical representation of loggers, so &lt;code&gt;klauer.softwarethings&lt;/code&gt; is a specific level, such that a class logger of &lt;code&gt;klauer.softwarethings.ANeatoClass&lt;/code&gt; would have a logger at the same level as this logger, and a class at &lt;code&gt;klauer.MainClass&lt;/code&gt; is at a higher level. This kind of representation can matter to you if you&amp;rsquo;re building a very rich set of loggers for your app/s and want a consistent style, but for maintainability, it would be best to stick with classes. Much of this can be configured in your &lt;code&gt;logback.xml&lt;/code&gt; or &lt;code&gt;logback.groovy&lt;/code&gt; files, which are covered &lt;strong&gt;deeply&lt;/strong&gt; in the &lt;a href=&#34;http://logback.qos.ch/manual/architecture.html&#34;&gt;documentation&lt;/a&gt;.  I&amp;rsquo;ll leave it to you to dig in and find what works best, but I&amp;rsquo;ve found that simply specifying each logger by the class that it&amp;rsquo;s being invoked from is enough for me to know the flow of the code and helps with log parsers like Splunk or Loggly in finding trends or hot zones.&lt;/p&gt;
+
+&lt;p&gt;As I had mentioned above, you can choose either an **&lt;code&gt;XML&lt;/code&gt;** or **&lt;code&gt;groovy&lt;/code&gt;** configuration file format. In addition to that, you can have a separate &lt;code&gt;logback-test.xml/groovy&lt;/code&gt; file that will be used for debugging purposes only. What makes this especially useful is that if you use it with Maven, you can just put your &lt;code&gt;logback-test&lt;/code&gt; file in &lt;code&gt;src/test/resources&lt;/code&gt; and it will only be used for your testing and regular build-cycle process. This way you aren&amp;rsquo;t creating log files for testing, for instance, or sending email alerts on &lt;code&gt;Logger.error()&lt;/code&gt; calls. The &lt;code&gt;logback.xml/groovy&lt;/code&gt; that sits in your &lt;code&gt;src/main/resources&lt;/code&gt; will get bundled up into your deployed application.&lt;/p&gt;
+
+&lt;p&gt;For the given example below, I&amp;rsquo;ve decided to use XML, but there is a nice &lt;a href=&#34;http://logback.qos.ch/translator/asGroovy.html&#34;&gt;&lt;code&gt;logback.xml-to-groovy&lt;/code&gt;&lt;/a&gt; converter, which should make light work of the example code below. Let&amp;rsquo;s take a look at a sample logback configuration file:&lt;/p&gt;
+
+&lt;p&gt;[sourcecode language=&amp;ldquo;xml&amp;rdquo; gutter=&amp;ldquo;false&amp;rdquo;]
+&lt;configuration&gt;
+  &lt;appender name=&#34;FILE&#34; class=&#34;ch.qos.logback.core.rolling.RollingFileAppender&#34;&gt;
+    &lt;file&gt;logFile.log&lt;/file&gt;
+    &lt;rollingPolicy class=&#34;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&#34;&gt;
+      &amp;lt;!&amp;ndash; daily rollover &amp;ndash;&amp;gt;
+      &lt;fileNamePattern&gt;logFile.%d{yyyy-MM-dd}.log&lt;/fileNamePattern&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  &amp;lt;!-- keep 30 days&#39; worth of history --&amp;gt;
+  &amp;lt;maxHistory&amp;gt;30&amp;lt;/maxHistory&amp;gt;
+&amp;lt;/rollingPolicy&amp;gt;
+
+&amp;lt;encoder&amp;gt;
+  &amp;lt;pattern&amp;gt;%-4relative [%thread] %-5level %logger{35} - %msg%n&amp;lt;/pattern&amp;gt;
+&amp;lt;/encoder&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/appender&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;root level=&#34;DEBUG&#34;&gt;
+    &lt;appender-ref ref=&#34;FILE&#34; /&gt;
+  &lt;/root&gt;
+&lt;/configuration&gt;
+[/sourcecode]&lt;/p&gt;
+
+&lt;p&gt;What do we have here?&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;appender class&lt;/code&gt; simply defines the type of appender. In this case, we&amp;rsquo;re using a &lt;code&gt;RollingFileAppender&lt;/code&gt;, but there are a number of other options, such as a &lt;code&gt;ConsoleAppender&lt;/code&gt;, &lt;code&gt;SMTP&lt;/code&gt; appender, etc. etc.. It&amp;rsquo;s all laid out in the &lt;a href=&#34;http://logback.qos.ch/manual/appenders.html&#34;&gt;Appenders&lt;/a&gt; chapter of the documentation.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;code&gt;rollingPolicy&lt;/code&gt; dictates how to best roll the logs out. In this case, we&amp;rsquo;re using a simple &lt;code&gt;[TimeBasedRollingPolicy](http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy)&lt;/code&gt; as it lets us specify the filename of the log and the number of days to keep. Another option that could be used is file size-based&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;code&gt;fileNamePattern&lt;/code&gt; can be pretty easy to understand, but the part that matters is the level of granularity you specify in your logs. For instance, a date format of &lt;code&gt;%d{yyyy-MM}&lt;/code&gt; will roll monthly, thus changing how &lt;code&gt;maxHistory&lt;/code&gt; is interpreted.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;The &lt;code&gt;encoder&lt;/code&gt; pattern is laid out in the appenders documentation as well, but in this case, the &lt;code&gt;RollingFileAppender&lt;/code&gt; uses a &lt;a href=&#34;http://logback.qos.ch/manual/appenders.html#OutputStreamAppender&#34;&gt;OutputStreamAppender&lt;/a&gt; which has it&amp;rsquo;s own semantics. You can see that we&amp;rsquo;re teasing out the thread that it&amp;rsquo;s running under, the log level, name of the logger, and the message, but there are as always a number of good options if those don&amp;rsquo;t satisfy your need that much. What works great about this is that you can use this exact format in a Splunk configuration to let Splunk know just how to parse log files generated by your application.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;The &lt;code&gt;root level&lt;/code&gt; tells us at what level of the logger we want to capture, and the &lt;code&gt;appender-ref&lt;/code&gt; tells us which appender to use for this level. Much of this is covered in the &lt;a href=&#34;http://logback.qos.ch/manual/configuration.html&#34;&gt;Configuration&lt;/a&gt; chapter of the documentation, which also goes over the Log Levels, log hierarchy and parent/child relationships. For our purposes, we just want to capture any logging events Debug or Higher. In production, you could probably see this being &amp;ldquo;INFO&amp;rdquo; or higher, or separate it out to have a separate logger that sends emails on &amp;ldquo;ERROR&amp;rdquo; or higher.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I&amp;rsquo;ve only scratched the surface for this, but hopefully you can see that logging doesn&amp;rsquo;t have to be so simple as to be just &lt;code&gt;System.out.println&lt;/code&gt; everywhere. It can be useful, functional, and not alot of work. As you can see above, the &lt;code&gt;logback.xml&lt;/code&gt; file is really all you need to configure to make it work the way you want to, and I&amp;rsquo;ve found that the defaults for things such as &lt;code&gt;RollingFileAppender&lt;/code&gt; is pretty simple to set up. Logback is smart enough to roll your logs over daily, zip them up, and delete out the old ones, so it should make keeping logs a simple matter with little maintenance to it.&lt;/p&gt;
+
+&lt;h1 id=&#34;more-information:2e0542eaca17d1f3fa27b65fb0688150&#34;&gt;More information:&lt;/h1&gt;
+
+&lt;h2 id=&#34;logback-http-logback-qos-ch-http-logback-qos-ch:2e0542eaca17d1f3fa27b65fb0688150&#34;&gt;Logback - &lt;a href=&#34;http://logback.qos.ch&#34;&gt;http://logback.qos.ch/&lt;/a&gt;&lt;/h2&gt;
+
+&lt;h2 id=&#34;maven:2e0542eaca17d1f3fa27b65fb0688150&#34;&gt;Maven:&lt;/h2&gt;
+
+&lt;p&gt;[sourcecode language=&amp;ldquo;xml&amp;rdquo;]
+&lt;dependency&gt;
+    &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+    &lt;artifactId&gt;logback-core&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+    &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+    &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
+    &lt;version&gt;1.6.4&lt;/version&gt;
+&lt;/dependency&gt;
+[/sourcecode]&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Spring Framework is a Gateway Drug</title>
+      <link>http://blog.nickklauer.info/post/2012/spring-framework-is-a-gateway-drug/</link>
+      <pubDate>Wed, 18 Jan 2012 08:46:00 +0000</pubDate>
+      
+      <guid>http://blog.nickklauer.info/post/2012/spring-framework-is-a-gateway-drug/</guid>
+      <description>&lt;p&gt;I was going to mention about my previous post why I didn&amp;rsquo;t pick &lt;a href=&#34;http://www.springsource.org/features&#34;&gt;Spring DI&lt;/a&gt; over &lt;a href=&#34;http://code.google.com/p/google-guice/&#34;&gt;Guice&lt;/a&gt;.  It&amp;rsquo;s not that I dont&amp;rsquo; think Spring is a good choice, but I believe that Spring is a gateway drug to evil things&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;Spring DI by itself was a lifesaver for the Java EE developer, as it made your code mostly just Beans and POJO&amp;rsquo;s.  This is great, and it&amp;rsquo;s what attracted me to it.  However, after it&amp;rsquo;s initial success, it expanded into a plethora of tools and frameworks, even going so far as to &lt;a href=&#34;http://www.springsource.org/downloads/sts&#34;&gt;make it&amp;rsquo;s own IDE&lt;/a&gt;, acquire the Groovy and Grails teams, and be bought out by VMWare in turn.  It now encompasses a &lt;a href=&#34;http://www.springsource.org/documentation&#34;&gt;plethora of domains&lt;/a&gt;, and has an end-to-end stack for deploying to the cloud, mobile, web, security, and just-about-anythign-you-can-think-of.  I believe this has turned it into the monster it was created to slay (Java EE), by being a modular, bloated framework.  It&amp;rsquo;s only slightly more modular than Java EE.  I don&amp;rsquo;t quite understand how it can have such a huge collection of disparate tools and not be considered bloated.&lt;/p&gt;
+
+&lt;p&gt;What always ends up happening in architecture designs is that when you bring Spring in to handle your DI, you start to think, &amp;ldquo;well, now that Spring is the DI tool, I guess I could use Spring JDBC for the database calls,&amp;rdquo; so you add a little more.  Then, when you want to do a Mailer, you think, &amp;ldquo;does Spring have a mailer?&amp;rdquo;, and lo-and behold, it does!  Next, you may have to handle some user authentication or whatnot, and think, &amp;ldquo;&amp;hellip;Spring?&amp;rdquo;, yeah, it does that, too.&lt;/p&gt;
+
+&lt;p&gt;This isn&amp;rsquo;t a problem if you like Spring, but it tends to be either &amp;ldquo;trivially easy&amp;rdquo; to do in Spring, or makes comparisons against other tools more difficult.  &amp;ldquo;Why choose anything other than Spring JDBC?  I mean, it&amp;rsquo;s a Spring app, so why bother?&amp;rdquo; end up being the argument.  Who knows, maybe the other library is better by a mile, or even just marginally better, but because you&amp;rsquo;ve already chosen Spring to start your framework, you&amp;rsquo;re basically going to roll around in the thing until you&amp;rsquo;re completely covered in Spring mud.&lt;/p&gt;
+
+&lt;p&gt;It&amp;rsquo;s much like that oft-repeated quote:&lt;/p&gt;
+
+&lt;blockquote&gt;XML is like violence; if it doesn&#39;t solve your problem, you&#39;re not using enough of it.&lt;/blockquote&gt;
+
+&lt;p&gt;Spring is like that.  It makes choosing a good toolset harder, as it ends up making the burden of proof on whether the thing you want to use is &lt;strong&gt;better&lt;/strong&gt; than Spring&amp;rsquo;s offering, versus just trying to find a good tool to do the job.&lt;/p&gt;
+
+&lt;p&gt;I may use Spring in other jobs, but I find that it limits you to their way of configuring things, and doesn&amp;rsquo;t have the fun of some of the simpler tools like the Java &lt;a href=&#34;http://www.sparkjava.com/&#34;&gt;Spark&lt;/a&gt; framework, or &lt;a href=&#34;http://www.date4j.net/&#34;&gt;Date4J&lt;/a&gt;.  It&amp;rsquo;s become the enterprise monster it was sent out to defeat.  &amp;ldquo;Power corrupts: absolute power corrupts absolutely&amp;rdquo;.  Don&amp;rsquo;t let Spring into an app that doesn&amp;rsquo;t have it unless you&amp;rsquo;re prepared to fight over every minor thing that Spring &amp;ldquo;can do for you&amp;rdquo;&amp;hellip;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Java Batch CLI Template</title>
+      <link>http://blog.nickklauer.info/post/2012/java-batch-cli-template/</link>
+      <pubDate>Wed, 18 Jan 2012 08:35:00 +0000</pubDate>
+      
+      <guid>http://blog.nickklauer.info/post/2012/java-batch-cli-template/</guid>
+      <description>&lt;p&gt;At work, there have been a couple times that I needed to throw together the equivalent of a batch processing job or one-off command-line application to process some data quick and dirty.  My platform that I have to develop on has it&amp;rsquo;s own Java API, so I lean on using a Java framework or toolset to get this work done.  This ends up simplifying the end-to-end migration of source data &amp;ndash;&amp;gt; destination data.&lt;/p&gt;
+
+&lt;p&gt;Because of these various projects, I&amp;rsquo;ve grown to like a few Java libraries that make working with the language a little less verbose or clunkyWith that, I decided to take these common pieces and make a template applicatino out of it.&lt;/p&gt;
+
+&lt;p&gt;Presenting &lt;a href=&#34;https://github.com/klauern/java-batch-command-line&#34;&gt;java-batch-command-line&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;I like my names to be self-explanatory, because there&amp;rsquo;s just too many weird names out there for me to try to remember what they did (hello RubyGem maintainers!).&lt;/p&gt;
+
+&lt;p&gt;What is this?&lt;/p&gt;
+
+&lt;p&gt;As work is mostly Maven at this point, I decided to stick to it for my command-line apps.  I would love to start digging into Gradle and converting this over to one, but I haven&amp;rsquo;t had the time (on my to-do list, though).&lt;/p&gt;
+
+&lt;p&gt;Libraries I&amp;rsquo;ve included and stubbed some pieces out:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://maven.apache.org&#34;&gt;Maven&lt;/a&gt; (including &lt;a href=&#34;http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/&#34;&gt;AppAssembler&lt;/a&gt; configuration)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://jcommander.org&#34;&gt;JCommander&lt;/a&gt; (it&amp;rsquo;s the best command-line option parsing lib I&amp;rsquo;ve found on Java so far)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://logback.qos.ch&#34;&gt;Logback&lt;/a&gt; (because log4j was so last year&amp;hellip;and the maintainer of log4j made this library telling everyone to move to this)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Google&amp;rsquo;s goodies (&lt;a href=&#34;http://code.google.com/p/guava-libraries/&#34;&gt;Guava &lt;/a&gt;and &lt;a href=&#34;http://code.google.com/p/google-guice/&#34;&gt;Guice&lt;/a&gt;, both excellent in my opinion)&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;What does this framework give you that you can&amp;rsquo;t do yourself?  I will admit, probably not much.  However, I have had to reinvent the wheel on this a couple times just because I like these tools better than others, so it saves me some time.  It includes in it:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Maven POM&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;defining the dependencies above,&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;including &lt;a href=&#34;http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/&#34;&gt;AppAssembler&lt;/a&gt; for building a standalone command-line app&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;pre-defined resource filtering&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Eclipse Project files&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Google Guice stubs for DI management&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;CommandLineOpts with default command-line parsing&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://logback.qos.ch/manual/configuration.html&#34;&gt;Logback.xml configuration&lt;/a&gt; file for logging&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This basically saves me an hour or random digging I have had to do in the past, so it&amp;rsquo;s worthwhile to me.  I might go into the libraries in the future, but they are all great tools in my opinion, and I think if you&amp;rsquo;re a Java developer, you probably know about them at least in passing.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/klauern/java-batch-command-line&#34;&gt;GitHub : java-batch-command-line&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,194 @@
+<html lang="en">
+<head>
+
+  
+  <meta charset="utf-8">
+  <title>Resources for Learning Datomic/Datalog</title>
+  <meta name="description" content="Resources for Learning Datomic/Datalog">
+  <meta name="author" content="Nick Klauer">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/fonts.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/normalize.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/skeleton.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/custom.css">
+
+  
+  
+  <link rel="stylesheet" href="http://blog.nickklauer.info//highlight/styles/default.css">
+  
+  <script src="http://blog.nickklauer.info//highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</head>
+<body>
+
+<header id="menu">
+  <div class="container">
+	<span class="logo">DevOps Confusion</span>
+	<a>&#9776;</a>
+  </div>
+</header>
+
+<nav class="navbar">
+  <div class="container">
+	<div class="row">
+	  <div class="eight columns offset-by-two">
+		<ul class="">
+		  
+		  <li class="u-pull-left"> <a href="http://blog.nickklauer.info/" class="brand" style="font-weight:bold;font-size:normal"> DevOps Confusion </a></li>
+		  <li class="u-pull-right cate"> <a href="http://blog.nickklauer.info//about/" class=""> About </a></li>
+		  
+		</ul>
+	  </div>
+	</div>
+  </div>
+</nav>
+
+
+<div class="container post-wrapper">
+  <div class="row">
+	<div class="eight columns offset-by-two">
+	  <div id="post-title">
+		<p class="footnote">
+		  
+		  <time class="">2012-10-18</time>
+		  
+		  
+		  
+
+		  
+
+		  
+
+		</p>
+		<h5>Resources for Learning Datomic/Datalog</h5>
+	  </div>
+
+	  <div class="post">
+		
+
+<p>Okay, so there&rsquo;s alot of talk about NoSQL, and as you would rightly guess, everybody has thrown their implementation in the ring.  I think out of most of them, <a href="http://www.datomic.com">Datomic</a> is one of the more unique entries in the field.</p>
+
+<p>However, it&rsquo;s hard for me (and probably anyone with SQL knowledge) to really understand what makes Datomic useful or anything more than an incremental improvement at the cost of eschewing SQL as a querying language (well, that was my initial thought at the time&ndash;it&rsquo;s changed since then).</p>
+
+<p>I think that with the recent release of <a href="http://blog.datomic.com/2012/10/codeq.html">codeq</a>, the guys behind Datomic are trying to point out the usefulness and simplicity of their database model, and make it accessible to a larger audience.</p>
+
+<p>Now, what do you want to learn to understand codeq?  Well, you could start by reading the blog post about it:</p>
+
+<p><a href="http://blog.datomic.com/2012/10/codeq.html">http://blog.datomic.com/2012/10/codeq.html</a></p>
+
+<p>After that, you might want to get Datomic installed and running on your system.  I&rsquo;d recommend downloading the free edition for tinkering: <a href="http://downloads.datomic.com/free.html">http://downloads.datomic.com/free.html</a></p>
+
+<p>Once you have it downloaded, you&rsquo;ll probably want to understand how to get it running.  The <a href="https://github.com/Datomic/codeq#codeq">codeq README</a> has that wrapped up.  It links to the <a href="http://docs.datomic.com/getting-started.html">Datomic Getting Started</a> page to understand how to get it running.  It couldn&rsquo;t be easier than this, though:</p>
+
+<blockquote>
+
+>     
+>     $ cd /wherever-you-extracted-datomic/
+>     $ bin/transactor
+>     ... watch it start up
+> 
+> 
+</blockquote>
+
+<p>Installing codeq is explained <a href="https://github.com/Datomic/codeq#usage">on their site, too</a>, although it would be nice for them to supply a runnable .jar instead of asking for everyone to install <a href="https://github.com/technomancy/leiningen">Leiningen</a> and run <code>**lein uberjar**</code>, but it&rsquo;s simple enough if you&rsquo;re into Clojure.</p>
+
+<p>Now, to review, the steps to get up-and-running with Codeq and a git repo (Clojure-based at the moment) of your choice are:</p>
+
+<ol>
+<li><p><a href="http://www.datomic.com/get-datomic.html">Get Datomic installed</a></p></li>
+
+<li><p><a href="http://docs.datomic.com/getting-started.html">Start the Datomic transactor</a></p></li>
+
+<li><p><a href="https://github.com/Datomic/codeq#usage">build Codeq</a></p></li>
+
+<li><p><a href="https://github.com/Datomic/codeq#usage">run Codeq on your git repo</a> and</p></li>
+
+<li><p>import it into Datomic</p></li>
+</ol>
+
+<p>You&rsquo;ll probably wonder what the heck to do next, such as how to query it.  Here&rsquo;s a couple links that got me started:</p>
+
+<ul>
+<li><p><a href="http://docs.datomic.com/query.html">Querying Tutorial</a> for Datalog in Datomic</p></li>
+
+<li><p><a href="https://gist.github.com/2645453">Datalog examples using Clojure data structures itself</a> (this alone makes datalog useful for Clojure coding as you don&rsquo;t even need Datomic in some cases to use it)</p></li>
+
+<li><p><a href="https://github.com/jonase/codeq/blob/queries/src/datomic/codeq/examples.clj">code examples</a> from this <a href="https://groups.google.com/d/msg/datomic/Xx2nLvCl4s4/y6LQPO7xyCgJ">google group post</a> querying some git internals</p></li>
+
+<li><p>Finally, looking at the <a href="http://cloud.github.com/downloads/Datomic/codeq/codeq.pdf">codeq git schema</a> might make some sense for you now</p></li>
+</ul>
+
+<h2 id="summary:cb61d1c5d66dacaffff486163f948935">Summary</h2>
+
+<p>It would be nice if this was pre-packaged, but it&rsquo;s only a week old, so I have hopes that this will come along pretty quickly.</p>
+
+<p>I actually wouldn&rsquo;t be surprised if someone decides to do something akin to what <a href="http://rubydoc.info/">rubydoc.info</a> does for documentation.  Rubydoc.info will generate YARD documentation for all of the gems in rubygems, as well as many Github projects, too.  This is a great resource, and it&rsquo;s done because it&rsquo;s simple enough to just run the same documentation tool against all of the same kinds of projects.</p>
+
+<p>With codeq, all that&rsquo;s needed to index a project is: 1) a Clojure project 2) backed by git.  You could probably do that for most of the projects on Clojars.org if they specify a Git repo, and then provide some front-end site that would have common queries (as seen by some of the code examples in codeq so far).  The great thing about codeq is that since the schema is the same across all git repos, useful queries and very portable across projects, and so it makes perfect sense for those kinds of queries to be reused.</p>
+
+	  </div>
+	</div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="container">
+	<div class="row">
+	  <div class="ten columns offset-by-two">
+		<p class="footnote">
+		  
+		  Copyright (c) 2015, Nick Klauer; all rights reserved.
+		  
+		  
+		  Find me at
+
+		  
+		  <a href="https://github.com/klauern" >GitHub</a>
+		  
+
+		  
+		  <a href="https://www.facebook.com/nick.klauer">Facebook</a>
+		  
+
+		  
+		  <a href="https://twitter.com/klauern">Twitter</a>
+		  
+
+		  
+
+		  
+		</p>
+	  </div>
+	</div>
+  </div>
+</div>
+
+
+<script src="http://blog.nickklauer.info//js/jquery.min.js" type="text/javascript"></script>
+<script src="http://blog.nickklauer.info//js/jquery.timeago.js" type="text/javascript"></script>
+<script type="text/javascript">
+  $(function(){
+    $("time.timeago").timeago();
+  })
+  $("#menu").click(function(){
+    $(".brand").text("HOME");
+    $(".navbar ul li").removeClass("cate");
+    $(".navbar").toggle();
+  });
+  $(window).resize(function(){
+    if(window.innerWidth > 768) {
+      $(".navbar").removeAttr("style");
+    }
+  });
+</script>
+
+</body>
+</html>
+

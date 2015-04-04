@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vmware on DevOps Confusion</title>
+    <link>http://blog.nickklauer.info/tags/vmware/</link>
+    <description>Recent content in Vmware on DevOps Confusion</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright (c) 2015, Nick Klauer; all rights reserved.</copyright>
+    <lastBuildDate>Tue, 07 Sep 2010 07:44:00 +0000</lastBuildDate>
+    <atom:link href="http://blog.nickklauer.info/tags/vmware/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Virtualization Options for a Developer...VMWare now?</title>
+      <link>http://blog.nickklauer.info/post/2010/virtualization-options-for-a-developer-vmware-now/</link>
+      <pubDate>Tue, 07 Sep 2010 07:44:00 +0000</pubDate>
+      
+      <guid>http://blog.nickklauer.info/post/2010/virtualization-options-for-a-developer-vmware-now/</guid>
+      <description>&lt;p&gt;So I have been recently trying to get my HP Elitebook 8440p to work properly with a VM.  I have long been a fan of Linux, Unix, BSD, and OS X, so having to use Windows for my day job really tends to bring me down.  I had a working desktop for Linux, but unfortunately it only works when I&amp;rsquo;m at the office, not out of office (VPN settings and all that).  So I&amp;rsquo;m back to trying again, only this time I want to do it through a VM, since that at least affords me the chance to fal back to NAT traversal for proxy settings and such, letting Windows handle in-office and out-of-office network settings.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

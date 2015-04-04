@@ -1,0 +1,170 @@
+<html lang="en">
+<head>
+
+  
+  <meta charset="utf-8">
+  <title>A Quick Look at edn</title>
+  <meta name="description" content="A Quick Look at edn">
+  <meta name="author" content="Nick Klauer">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/fonts.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/normalize.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/skeleton.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/custom.css">
+
+  
+  
+  <link rel="stylesheet" href="http://blog.nickklauer.info//highlight/styles/default.css">
+  
+  <script src="http://blog.nickklauer.info//highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</head>
+<body>
+
+<header id="menu">
+  <div class="container">
+	<span class="logo">DevOps Confusion</span>
+	<a>&#9776;</a>
+  </div>
+</header>
+
+<nav class="navbar">
+  <div class="container">
+	<div class="row">
+	  <div class="eight columns offset-by-two">
+		<ul class="">
+		  
+		  <li class="u-pull-left"> <a href="http://blog.nickklauer.info/" class="brand" style="font-weight:bold;font-size:normal"> DevOps Confusion </a></li>
+		  <li class="u-pull-right cate"> <a href="http://blog.nickklauer.info//about/" class=""> About </a></li>
+		  
+		</ul>
+	  </div>
+	</div>
+  </div>
+</nav>
+
+
+<div class="container post-wrapper">
+  <div class="row">
+	<div class="eight columns offset-by-two">
+	  <div id="post-title">
+		<p class="footnote">
+		  
+		  <time class="">2012-09-08</time>
+		  
+		  
+		  
+
+		  
+
+		  
+
+		</p>
+		<h5>A Quick Look at edn</h5>
+	  </div>
+
+	  <div class="post">
+		<p>I code in Clojure in my free time. It has a nice set of features and syntax that is a vast simplification and improvement over Java. I&rsquo;m also a pretty big fan of the JVM and it&rsquo;s wealth of libraries and such, so having Clojure run on the JVM makes using Clojure a lot easier.  Anyways, something about Clojure that I found pretty easy to transition to was Clojure&rsquo;s set of data literals.  Things like Maps being defined within {}, sets in #{}, lists as (), and vectors as [] is pretty consistent with Java and actually alot closer to Ruby (another of my favorite languages).</p>
+
+<p>So having just read about Rich Hickey releasing a data format based largely on a superset of Clojure&rsquo;s data types, I was pretty excited:</p>
+
+<p>[tweet <a href="https://twitter.com/swannodette/status/243866691728183298">https://twitter.com/swannodette/status/243866691728183298</a>]</p>
+
+<p>Alot of people I&rsquo;ve read so far are comparing it to JSON, which is probably pretty close.  Here are a couple of things I think improve upon how people use JSON and what makes edn better as a data interchange format:</p>
+
+<ul>
+<li>namespaced symbols.  These alone make hashmaps and sets easier to parse and define uniqueness.  I suppose you could get by with &ldquo;string&rdquo; everywhere, but anything you&rsquo;d do in a &ldquo;string&rdquo; you&rsquo;d have to implement a parser for more complex logic on either side.   For instance, namespacing your keywords and symbols like so:[sourcecode language=&ldquo;clojure&rdquo;]
+{ :counterparty/name :keywordval
+:counterparty/id 13850
+:counterparty/inception 1930 }
+[/sourcecode]</li>
+</ul>
+
+<p>allows you to be alot more flexible in your data, and since it&rsquo;s built in to the spec, there would be no extra work involved in using it.</p>
+
+<ul>
+<li>tagged elements</li>
+</ul>
+
+<p>Defining your own types that can be interpreted reminded me of Thrift and Protocol Buffers, although I think their implementations were meant more for computer-computer communication moreso than computer-person-computer or some variant thereof.</p>
+
+<p>This could be ported to Java and other languages pretty easily, and I think it marks the state of the next data format.  Even if edn doesn&rsquo;t make it, it shows where JSON needs to improve, if it ever can.  Many can speculate why JSON became popular, but I attribute it to two things:</p>
+
+<ol>
+<li><p>JSON is based on Javascript, and Javascript is the defacto language on the web simply because all browsers support it and nothing else.</p></li>
+
+<li><p>JSON is more readable than XML to the human eye.  That said, I&rsquo;ve never understood why XML was ever used for anything a developer or user would write for, as that was never it&rsquo;s intent.</p></li>
+</ol>
+
+<p>JSON does lack specific features from edn which I think would put JSON more on par with alot of developers needs.</p>
+
+<p>All in all, I like this, and hope that it picks up some momentum in use.  I will definitely be keeping an eye out for future use of it.</p>
+
+<p>If you&rsquo;d like to follow along with what alot of people are also thinking about the edn specification, the <a href="https://groups.google.com/d/topic/clojure/aRUEIlAHguU/discussion">Clojure Google Group</a> has a pretty lively discussion going on right now.</p>
+
+	  </div>
+	</div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="container">
+	<div class="row">
+	  <div class="ten columns offset-by-two">
+		<p class="footnote">
+		  
+		  Copyright (c) 2015, Nick Klauer; all rights reserved.
+		  
+		  
+		  Find me at
+
+		  
+		  <a href="https://github.com/klauern" >GitHub</a>
+		  
+
+		  
+		  <a href="https://www.facebook.com/nick.klauer">Facebook</a>
+		  
+
+		  
+		  <a href="https://twitter.com/klauern">Twitter</a>
+		  
+
+		  
+
+		  
+		</p>
+	  </div>
+	</div>
+  </div>
+</div>
+
+
+<script src="http://blog.nickklauer.info//js/jquery.min.js" type="text/javascript"></script>
+<script src="http://blog.nickklauer.info//js/jquery.timeago.js" type="text/javascript"></script>
+<script type="text/javascript">
+  $(function(){
+    $("time.timeago").timeago();
+  })
+  $("#menu").click(function(){
+    $(".brand").text("HOME");
+    $(".navbar ul li").removeClass("cate");
+    $(".navbar").toggle();
+  });
+  $(window).resize(function(){
+    if(window.innerWidth > 768) {
+      $(".navbar").removeAttr("style");
+    }
+  });
+</script>
+
+</body>
+</html>
+

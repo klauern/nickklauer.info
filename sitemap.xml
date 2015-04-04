@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>http://blog.nickklauer.info/</loc>
+    <lastmod>2013-03-28T20:10:39+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2013/wheres-the-challenge/</loc>
+    <lastmod>2013-03-28T20:10:39+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2012/stopping-an-ejb-programmatically/</loc>
+    <lastmod>2012-10-23T19:58:43+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2012/book-review-the-information-diet-by-clay-johnson/</loc>
+    <lastmod>2012-10-20T03:19:55+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2012/resources-for-learning-datomicdatalog/</loc>
+    <lastmod>2012-10-18T03:14:51+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2012/a-quick-look-at-edn/</loc>
+    <lastmod>2012-09-08T02:36:32+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2012/want-to-help-people-with-clojure-subscribe-to-stackoverflows-tag/</loc>
+    <lastmod>2012-07-30T01:43:32+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2012/why-stacked-ranking-is-absurd-in-the-workplace-but-might-be-okay-for-indoctrination/</loc>
+    <lastmod>2012-07-05T14:00:24+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2012/book-review-into-thin-air-by-jon-krakauer/</loc>
+    <lastmod>2012-07-04T01:33:36+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2012/groovy-script-to-clean-up-your-mavens-m2-local-repo-without-deleting-everything/</loc>
+    <lastmod>2012-05-16T16:10:14+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2012/future-of-browser-development/</loc>
+    <lastmod>2012-04-26T04:15:27+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2012/keystore-explorer/</loc>
+    <lastmod>2012-04-18T13:41:01+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2012/dropwizard-simple-self-contained-restful-web-services-in-java-httpdropwizard-codahale-com/</loc>
+    <lastmod>2012-03-15T16:06:26+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2012/logback-logging/</loc>
+    <lastmod>2012-03-01T03:22:44+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2012/spring-framework-is-a-gateway-drug/</loc>
+    <lastmod>2012-01-18T08:46:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2012/java-batch-cli-template/</loc>
+    <lastmod>2012-01-18T08:35:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2012/book-review-slack-by-tom-demarco/</loc>
+    <lastmod>2012-01-14T06:25:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2011/schemaspy-with-oracle-exadata-service-names/</loc>
+    <lastmod>2011-12-29T22:31:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2011/vim-is-awesome/</loc>
+    <lastmod>2011-11-20T08:36:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2010/posting-pictures-for-fun/</loc>
+    <lastmod>2010-09-18T07:49:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2010/fun-with-the-htc-desire/</loc>
+    <lastmod>2010-09-07T08:24:38+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2010/virtualization-options-for-a-developer-vmware-now/</loc>
+    <lastmod>2010-09-07T07:44:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.nickklauer.info/post/2009/some-of-my-recent-thoughts-on-google-wave/</loc>
+    <lastmod>2009-12-12T09:59:00+00:00</lastmod>
+  </url>
+  
+</urlset>

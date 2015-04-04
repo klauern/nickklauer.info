@@ -1,0 +1,148 @@
+<html lang="en">
+<head>
+
+  
+  <meta charset="utf-8">
+  <title>Spring Framework is a Gateway Drug</title>
+  <meta name="description" content="Spring Framework is a Gateway Drug">
+  <meta name="author" content="Nick Klauer">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/fonts.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/normalize.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/skeleton.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/custom.css">
+
+  
+  
+  <link rel="stylesheet" href="http://blog.nickklauer.info//highlight/styles/default.css">
+  
+  <script src="http://blog.nickklauer.info//highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</head>
+<body>
+
+<header id="menu">
+  <div class="container">
+	<span class="logo">DevOps Confusion</span>
+	<a>&#9776;</a>
+  </div>
+</header>
+
+<nav class="navbar">
+  <div class="container">
+	<div class="row">
+	  <div class="eight columns offset-by-two">
+		<ul class="">
+		  
+		  <li class="u-pull-left"> <a href="http://blog.nickklauer.info/" class="brand" style="font-weight:bold;font-size:normal"> DevOps Confusion </a></li>
+		  <li class="u-pull-right cate"> <a href="http://blog.nickklauer.info//about/" class=""> About </a></li>
+		  
+		</ul>
+	  </div>
+	</div>
+  </div>
+</nav>
+
+
+<div class="container post-wrapper">
+  <div class="row">
+	<div class="eight columns offset-by-two">
+	  <div id="post-title">
+		<p class="footnote">
+		  
+		  <time class="">2012-01-18</time>
+		  
+		  
+		  
+
+		  
+
+		  
+
+		</p>
+		<h5>Spring Framework is a Gateway Drug</h5>
+	  </div>
+
+	  <div class="post">
+		<p>I was going to mention about my previous post why I didn&rsquo;t pick <a href="http://www.springsource.org/features">Spring DI</a> over <a href="http://code.google.com/p/google-guice/">Guice</a>.  It&rsquo;s not that I dont&rsquo; think Spring is a good choice, but I believe that Spring is a gateway drug to evil things&hellip;</p>
+
+<p>Spring DI by itself was a lifesaver for the Java EE developer, as it made your code mostly just Beans and POJO&rsquo;s.  This is great, and it&rsquo;s what attracted me to it.  However, after it&rsquo;s initial success, it expanded into a plethora of tools and frameworks, even going so far as to <a href="http://www.springsource.org/downloads/sts">make it&rsquo;s own IDE</a>, acquire the Groovy and Grails teams, and be bought out by VMWare in turn.  It now encompasses a <a href="http://www.springsource.org/documentation">plethora of domains</a>, and has an end-to-end stack for deploying to the cloud, mobile, web, security, and just-about-anythign-you-can-think-of.  I believe this has turned it into the monster it was created to slay (Java EE), by being a modular, bloated framework.  It&rsquo;s only slightly more modular than Java EE.  I don&rsquo;t quite understand how it can have such a huge collection of disparate tools and not be considered bloated.</p>
+
+<p>What always ends up happening in architecture designs is that when you bring Spring in to handle your DI, you start to think, &ldquo;well, now that Spring is the DI tool, I guess I could use Spring JDBC for the database calls,&rdquo; so you add a little more.  Then, when you want to do a Mailer, you think, &ldquo;does Spring have a mailer?&rdquo;, and lo-and behold, it does!  Next, you may have to handle some user authentication or whatnot, and think, &ldquo;&hellip;Spring?&rdquo;, yeah, it does that, too.</p>
+
+<p>This isn&rsquo;t a problem if you like Spring, but it tends to be either &ldquo;trivially easy&rdquo; to do in Spring, or makes comparisons against other tools more difficult.  &ldquo;Why choose anything other than Spring JDBC?  I mean, it&rsquo;s a Spring app, so why bother?&rdquo; end up being the argument.  Who knows, maybe the other library is better by a mile, or even just marginally better, but because you&rsquo;ve already chosen Spring to start your framework, you&rsquo;re basically going to roll around in the thing until you&rsquo;re completely covered in Spring mud.</p>
+
+<p>It&rsquo;s much like that oft-repeated quote:</p>
+
+<blockquote>XML is like violence; if it doesn't solve your problem, you're not using enough of it.</blockquote>
+
+<p>Spring is like that.  It makes choosing a good toolset harder, as it ends up making the burden of proof on whether the thing you want to use is <strong>better</strong> than Spring&rsquo;s offering, versus just trying to find a good tool to do the job.</p>
+
+<p>I may use Spring in other jobs, but I find that it limits you to their way of configuring things, and doesn&rsquo;t have the fun of some of the simpler tools like the Java <a href="http://www.sparkjava.com/">Spark</a> framework, or <a href="http://www.date4j.net/">Date4J</a>.  It&rsquo;s become the enterprise monster it was sent out to defeat.  &ldquo;Power corrupts: absolute power corrupts absolutely&rdquo;.  Don&rsquo;t let Spring into an app that doesn&rsquo;t have it unless you&rsquo;re prepared to fight over every minor thing that Spring &ldquo;can do for you&rdquo;&hellip;</p>
+
+	  </div>
+	</div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="container">
+	<div class="row">
+	  <div class="ten columns offset-by-two">
+		<p class="footnote">
+		  
+		  Copyright (c) 2015, Nick Klauer; all rights reserved.
+		  
+		  
+		  Find me at
+
+		  
+		  <a href="https://github.com/klauern" >GitHub</a>
+		  
+
+		  
+		  <a href="https://www.facebook.com/nick.klauer">Facebook</a>
+		  
+
+		  
+		  <a href="https://twitter.com/klauern">Twitter</a>
+		  
+
+		  
+
+		  
+		</p>
+	  </div>
+	</div>
+  </div>
+</div>
+
+
+<script src="http://blog.nickklauer.info//js/jquery.min.js" type="text/javascript"></script>
+<script src="http://blog.nickklauer.info//js/jquery.timeago.js" type="text/javascript"></script>
+<script type="text/javascript">
+  $(function(){
+    $("time.timeago").timeago();
+  })
+  $("#menu").click(function(){
+    $(".brand").text("HOME");
+    $(".navbar ul li").removeClass("cate");
+    $(".navbar").toggle();
+  });
+  $(window).resize(function(){
+    if(window.innerWidth > 768) {
+      $(".navbar").removeAttr("style");
+    }
+  });
+</script>
+
+</body>
+</html>
+

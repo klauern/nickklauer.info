@@ -1,0 +1,286 @@
+<html lang="en">
+<head>
+
+  
+  <meta charset="utf-8">
+  <title>Logback Logging</title>
+  <meta name="description" content="Logback Logging">
+  <meta name="author" content="Nick Klauer">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/fonts.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/normalize.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/skeleton.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/custom.css">
+
+  
+  
+  <link rel="stylesheet" href="http://blog.nickklauer.info//highlight/styles/default.css">
+  
+  <script src="http://blog.nickklauer.info//highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</head>
+<body>
+
+<header id="menu">
+  <div class="container">
+	<span class="logo">DevOps Confusion</span>
+	<a>&#9776;</a>
+  </div>
+</header>
+
+<nav class="navbar">
+  <div class="container">
+	<div class="row">
+	  <div class="eight columns offset-by-two">
+		<ul class="">
+		  
+		  <li class="u-pull-left"> <a href="http://blog.nickklauer.info/" class="brand" style="font-weight:bold;font-size:normal"> DevOps Confusion </a></li>
+		  <li class="u-pull-right cate"> <a href="http://blog.nickklauer.info//about/" class=""> About </a></li>
+		  
+		</ul>
+	  </div>
+	</div>
+  </div>
+</nav>
+
+
+<div class="container post-wrapper">
+  <div class="row">
+	<div class="eight columns offset-by-two">
+	  <div id="post-title">
+		<p class="footnote">
+		  
+		  <time class="">2012-03-01</time>
+		  
+		  
+		  
+
+		  
+
+		  
+
+		</p>
+		<h5>Logback Logging</h5>
+	  </div>
+
+	  <div class="post">
+		
+
+<p>So logging is just not an attractive feature in most Java applications, so I can understand why alot of people just disregard this choice when writing a Java application.  However, when it comes to picking logging as a feature, it&rsquo;s best to pick one that&rsquo;s</p>
+
+<ol>
+<li><p>simple to set up</p></li>
+
+<li><p>grows with your app</p></li>
+
+<li><p>sane defaults</p></li>
+
+<li><p>configurable when it doesn&rsquo;t fit the bill</p></li>
+</ol>
+
+<p>Logback is one of those choices that I&rsquo;d recommend you just pick for your Java apps and worry about it later.</p>
+
+<p>Logback is the successor to the popular Log4J library written by the same developer.  That should tell you where the developer&rsquo;s spending his time.</p>
+
+<p>So why should you pick it?  Well, to cherry-pick some bullet-points from the developer&rsquo;s page on <a href="logback.qos.ch/reasonsToSwitch.html">why you should switch</a> (highly suggest reading that over):</p>
+
+<ol>
+<li><p>Faster than log4J for some cases (10X faster)</p></li>
+
+<li><p>interops easily with SLF4J</p></li>
+
+<li><p>Documentation is very thorough (otherwise I&rsquo;d not be writing this post)</p></li>
+
+<li><p>XML or Groovy config file</p></li>
+
+<li><p>reloads config file without a restart</p></li>
+
+<li><p>automatic file rolling, zipping, and deletion</p></li>
+</ol>
+
+<p>Anyways, it&rsquo;s about as feature-packed as you could honestly want with log files.  So let&rsquo;s get to configuring it out.</p>
+
+<p>I won&rsquo;t bore you with the large architecture and setup options for getting started, so let&rsquo;s assume a couple things to make this easy to follow:</p>
+
+<ul>
+<li><p>You&rsquo;re using Maven to build your app</p></li>
+
+<li><p>You&rsquo;ll use two appenders:</p>
+
+<ul>
+<li><p>one for debugging to <strong>STDOUT</strong></p></li>
+
+<li><p>one for logging to a file in production</p></li>
+</ul></li>
+
+<li><p>We&rsquo;ll roll these logs daily, keeping only <strong>30 days</strong> of saved off log files.</p></li>
+</ul>
+
+<p>Configuring your Logback with defaults.</p>
+
+<p>Let&rsquo;s assume that you&rsquo;re just starting out, and wnat to put the logger in some of your code.  This is pretty easy:</p>
+
+<p>[sourcecode language=&ldquo;java&rdquo;]
+package klauer.softwarethings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;</p>
+
+<p>public class LoggerThingy {
+  public static void main(String[] args) {</p>
+
+<pre><code>Logger logger = LoggerFactory.getLogger(&quot;klauer.softwarethings.LoggerThingy&quot;);
+// The simple case is just that--simple.
+logger.debug(&quot;Hello world.&quot;);
+
+String some_val = &quot;why not&quot;;
+String some_other_val = &quot;another one?&quot;;
+// Instead of using String + String or some convoluted StringBuffer.append(), we can use {}'s for two or less values.
+logger.debug(&quot;Hello World,  I have these additional fields: {} {}&quot;, some_val, some_other_val);
+
+String third_val = &quot;we'll keep going&quot;;
+// What do we do for three or more?  Easy:
+Object[] params = { some_val, some_other_val, third_val };
+logger.debug(&quot;All of these values are here, {} {} {}&quot;, params);
+</code></pre>
+
+<p>}
+}
+[/sourcecode]</p>
+
+<p>So as you might guess, it&rsquo;s not terribly difficult to spruce up your code with loggers.  Note that the <code>LoggerFactory</code> is taking a String from which I put in my class name, but you have the flexibility to take any structure of logging you want. Logback includes a hierarchical representation of loggers, so <code>klauer.softwarethings</code> is a specific level, such that a class logger of <code>klauer.softwarethings.ANeatoClass</code> would have a logger at the same level as this logger, and a class at <code>klauer.MainClass</code> is at a higher level. This kind of representation can matter to you if you&rsquo;re building a very rich set of loggers for your app/s and want a consistent style, but for maintainability, it would be best to stick with classes. Much of this can be configured in your <code>logback.xml</code> or <code>logback.groovy</code> files, which are covered <strong>deeply</strong> in the <a href="http://logback.qos.ch/manual/architecture.html">documentation</a>.  I&rsquo;ll leave it to you to dig in and find what works best, but I&rsquo;ve found that simply specifying each logger by the class that it&rsquo;s being invoked from is enough for me to know the flow of the code and helps with log parsers like Splunk or Loggly in finding trends or hot zones.</p>
+
+<p>As I had mentioned above, you can choose either an **<code>XML</code>** or **<code>groovy</code>** configuration file format. In addition to that, you can have a separate <code>logback-test.xml/groovy</code> file that will be used for debugging purposes only. What makes this especially useful is that if you use it with Maven, you can just put your <code>logback-test</code> file in <code>src/test/resources</code> and it will only be used for your testing and regular build-cycle process. This way you aren&rsquo;t creating log files for testing, for instance, or sending email alerts on <code>Logger.error()</code> calls. The <code>logback.xml/groovy</code> that sits in your <code>src/main/resources</code> will get bundled up into your deployed application.</p>
+
+<p>For the given example below, I&rsquo;ve decided to use XML, but there is a nice <a href="http://logback.qos.ch/translator/asGroovy.html"><code>logback.xml-to-groovy</code></a> converter, which should make light work of the example code below. Let&rsquo;s take a look at a sample logback configuration file:</p>
+
+<p>[sourcecode language=&ldquo;xml&rdquo; gutter=&ldquo;false&rdquo;]
+<configuration>
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logFile.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      &lt;!&ndash; daily rollover &ndash;&gt;
+      <fileNamePattern>logFile.%d{yyyy-MM-dd}.log</fileNamePattern></p>
+
+<pre><code>  &lt;!-- keep 30 days' worth of history --&gt;
+  &lt;maxHistory&gt;30&lt;/maxHistory&gt;
+&lt;/rollingPolicy&gt;
+
+&lt;encoder&gt;
+  &lt;pattern&gt;%-4relative [%thread] %-5level %logger{35} - %msg%n&lt;/pattern&gt;
+&lt;/encoder&gt;
+</code></pre>
+
+<p></appender></p>
+
+<p><root level="DEBUG">
+    <appender-ref ref="FILE" />
+  </root>
+</configuration>
+[/sourcecode]</p>
+
+<p>What do we have here?</p>
+
+<ul>
+<li><p><code>appender class</code> simply defines the type of appender. In this case, we&rsquo;re using a <code>RollingFileAppender</code>, but there are a number of other options, such as a <code>ConsoleAppender</code>, <code>SMTP</code> appender, etc. etc.. It&rsquo;s all laid out in the <a href="http://logback.qos.ch/manual/appenders.html">Appenders</a> chapter of the documentation.</p></li>
+
+<li><p><code>rollingPolicy</code> dictates how to best roll the logs out. In this case, we&rsquo;re using a simple <code>[TimeBasedRollingPolicy](http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy)</code> as it lets us specify the filename of the log and the number of days to keep. Another option that could be used is file size-based</p></li>
+
+<li><p><code>fileNamePattern</code> can be pretty easy to understand, but the part that matters is the level of granularity you specify in your logs. For instance, a date format of <code>%d{yyyy-MM}</code> will roll monthly, thus changing how <code>maxHistory</code> is interpreted.</p></li>
+
+<li><p>The <code>encoder</code> pattern is laid out in the appenders documentation as well, but in this case, the <code>RollingFileAppender</code> uses a <a href="http://logback.qos.ch/manual/appenders.html#OutputStreamAppender">OutputStreamAppender</a> which has it&rsquo;s own semantics. You can see that we&rsquo;re teasing out the thread that it&rsquo;s running under, the log level, name of the logger, and the message, but there are as always a number of good options if those don&rsquo;t satisfy your need that much. What works great about this is that you can use this exact format in a Splunk configuration to let Splunk know just how to parse log files generated by your application.</p></li>
+
+<li><p>The <code>root level</code> tells us at what level of the logger we want to capture, and the <code>appender-ref</code> tells us which appender to use for this level. Much of this is covered in the <a href="http://logback.qos.ch/manual/configuration.html">Configuration</a> chapter of the documentation, which also goes over the Log Levels, log hierarchy and parent/child relationships. For our purposes, we just want to capture any logging events Debug or Higher. In production, you could probably see this being &ldquo;INFO&rdquo; or higher, or separate it out to have a separate logger that sends emails on &ldquo;ERROR&rdquo; or higher.</p></li>
+</ul>
+
+<p>I&rsquo;ve only scratched the surface for this, but hopefully you can see that logging doesn&rsquo;t have to be so simple as to be just <code>System.out.println</code> everywhere. It can be useful, functional, and not alot of work. As you can see above, the <code>logback.xml</code> file is really all you need to configure to make it work the way you want to, and I&rsquo;ve found that the defaults for things such as <code>RollingFileAppender</code> is pretty simple to set up. Logback is smart enough to roll your logs over daily, zip them up, and delete out the old ones, so it should make keeping logs a simple matter with little maintenance to it.</p>
+
+<h1 id="more-information:2e0542eaca17d1f3fa27b65fb0688150">More information:</h1>
+
+<h2 id="logback-http-logback-qos-ch-http-logback-qos-ch:2e0542eaca17d1f3fa27b65fb0688150">Logback - <a href="http://logback.qos.ch">http://logback.qos.ch/</a></h2>
+
+<h2 id="maven:2e0542eaca17d1f3fa27b65fb0688150">Maven:</h2>
+
+<p>[sourcecode language=&ldquo;xml&rdquo;]
+<dependency>
+    <groupId>ch.qos.logback</groupId>
+    <artifactId>logback-core</artifactId>
+    <version>1.0.0</version>
+</dependency>
+<dependency>
+    <groupId>ch.qos.logback</groupId>
+    <artifactId>logback-classic</artifactId>
+    <version>1.0.0</version>
+</dependency>
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-api</artifactId>
+    <version>1.6.4</version>
+</dependency>
+[/sourcecode]</p>
+
+	  </div>
+	</div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="container">
+	<div class="row">
+	  <div class="ten columns offset-by-two">
+		<p class="footnote">
+		  
+		  Copyright (c) 2015, Nick Klauer; all rights reserved.
+		  
+		  
+		  Find me at
+
+		  
+		  <a href="https://github.com/klauern" >GitHub</a>
+		  
+
+		  
+		  <a href="https://www.facebook.com/nick.klauer">Facebook</a>
+		  
+
+		  
+		  <a href="https://twitter.com/klauern">Twitter</a>
+		  
+
+		  
+
+		  
+		</p>
+	  </div>
+	</div>
+  </div>
+</div>
+
+
+<script src="http://blog.nickklauer.info//js/jquery.min.js" type="text/javascript"></script>
+<script src="http://blog.nickklauer.info//js/jquery.timeago.js" type="text/javascript"></script>
+<script type="text/javascript">
+  $(function(){
+    $("time.timeago").timeago();
+  })
+  $("#menu").click(function(){
+    $(".brand").text("HOME");
+    $(".navbar ul li").removeClass("cate");
+    $(".navbar").toggle();
+  });
+  $(window).resize(function(){
+    if(window.innerWidth > 768) {
+      $(".navbar").removeAttr("style");
+    }
+  });
+</script>
+
+</body>
+</html>
+

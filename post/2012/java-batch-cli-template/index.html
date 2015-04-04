@@ -1,0 +1,182 @@
+<html lang="en">
+<head>
+
+  
+  <meta charset="utf-8">
+  <title>Java Batch CLI Template</title>
+  <meta name="description" content="Java Batch CLI Template">
+  <meta name="author" content="Nick Klauer">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/fonts.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/normalize.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/skeleton.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/custom.css">
+
+  
+  
+  <link rel="stylesheet" href="http://blog.nickklauer.info//highlight/styles/default.css">
+  
+  <script src="http://blog.nickklauer.info//highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</head>
+<body>
+
+<header id="menu">
+  <div class="container">
+	<span class="logo">DevOps Confusion</span>
+	<a>&#9776;</a>
+  </div>
+</header>
+
+<nav class="navbar">
+  <div class="container">
+	<div class="row">
+	  <div class="eight columns offset-by-two">
+		<ul class="">
+		  
+		  <li class="u-pull-left"> <a href="http://blog.nickklauer.info/" class="brand" style="font-weight:bold;font-size:normal"> DevOps Confusion </a></li>
+		  <li class="u-pull-right cate"> <a href="http://blog.nickklauer.info//about/" class=""> About </a></li>
+		  
+		</ul>
+	  </div>
+	</div>
+  </div>
+</nav>
+
+
+<div class="container post-wrapper">
+  <div class="row">
+	<div class="eight columns offset-by-two">
+	  <div id="post-title">
+		<p class="footnote">
+		  
+		  <time class="">2012-01-18</time>
+		  
+		  
+		  
+
+		  
+
+		  
+
+		</p>
+		<h5>Java Batch CLI Template</h5>
+	  </div>
+
+	  <div class="post">
+		<p>At work, there have been a couple times that I needed to throw together the equivalent of a batch processing job or one-off command-line application to process some data quick and dirty.  My platform that I have to develop on has it&rsquo;s own Java API, so I lean on using a Java framework or toolset to get this work done.  This ends up simplifying the end-to-end migration of source data &ndash;&gt; destination data.</p>
+
+<p>Because of these various projects, I&rsquo;ve grown to like a few Java libraries that make working with the language a little less verbose or clunkyWith that, I decided to take these common pieces and make a template applicatino out of it.</p>
+
+<p>Presenting <a href="https://github.com/klauern/java-batch-command-line">java-batch-command-line</a></p>
+
+<p>I like my names to be self-explanatory, because there&rsquo;s just too many weird names out there for me to try to remember what they did (hello RubyGem maintainers!).</p>
+
+<p>What is this?</p>
+
+<p>As work is mostly Maven at this point, I decided to stick to it for my command-line apps.  I would love to start digging into Gradle and converting this over to one, but I haven&rsquo;t had the time (on my to-do list, though).</p>
+
+<p>Libraries I&rsquo;ve included and stubbed some pieces out:</p>
+
+<ul>
+<li><p><a href="http://maven.apache.org">Maven</a> (including <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/">AppAssembler</a> configuration)</p></li>
+
+<li><p><a href="http://jcommander.org">JCommander</a> (it&rsquo;s the best command-line option parsing lib I&rsquo;ve found on Java so far)</p></li>
+
+<li><p><a href="http://logback.qos.ch">Logback</a> (because log4j was so last year&hellip;and the maintainer of log4j made this library telling everyone to move to this)</p></li>
+
+<li><p>Google&rsquo;s goodies (<a href="http://code.google.com/p/guava-libraries/">Guava </a>and <a href="http://code.google.com/p/google-guice/">Guice</a>, both excellent in my opinion)</p></li>
+</ul>
+
+<p>What does this framework give you that you can&rsquo;t do yourself?  I will admit, probably not much.  However, I have had to reinvent the wheel on this a couple times just because I like these tools better than others, so it saves me some time.  It includes in it:</p>
+
+<ul>
+<li><p>Maven POM</p>
+
+<ul>
+<li><p>defining the dependencies above,</p></li>
+
+<li><p>including <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/">AppAssembler</a> for building a standalone command-line app</p></li>
+
+<li><p>pre-defined resource filtering</p></li>
+</ul></li>
+
+<li><p>Eclipse Project files</p></li>
+
+<li><p>Google Guice stubs for DI management</p></li>
+
+<li><p>CommandLineOpts with default command-line parsing</p></li>
+
+<li><p><a href="http://logback.qos.ch/manual/configuration.html">Logback.xml configuration</a> file for logging</p></li>
+</ul>
+
+<p>This basically saves me an hour or random digging I have had to do in the past, so it&rsquo;s worthwhile to me.  I might go into the libraries in the future, but they are all great tools in my opinion, and I think if you&rsquo;re a Java developer, you probably know about them at least in passing.</p>
+
+<p><a href="https://github.com/klauern/java-batch-command-line">GitHub : java-batch-command-line</a></p>
+
+	  </div>
+	</div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="container">
+	<div class="row">
+	  <div class="ten columns offset-by-two">
+		<p class="footnote">
+		  
+		  Copyright (c) 2015, Nick Klauer; all rights reserved.
+		  
+		  
+		  Find me at
+
+		  
+		  <a href="https://github.com/klauern" >GitHub</a>
+		  
+
+		  
+		  <a href="https://www.facebook.com/nick.klauer">Facebook</a>
+		  
+
+		  
+		  <a href="https://twitter.com/klauern">Twitter</a>
+		  
+
+		  
+
+		  
+		</p>
+	  </div>
+	</div>
+  </div>
+</div>
+
+
+<script src="http://blog.nickklauer.info//js/jquery.min.js" type="text/javascript"></script>
+<script src="http://blog.nickklauer.info//js/jquery.timeago.js" type="text/javascript"></script>
+<script type="text/javascript">
+  $(function(){
+    $("time.timeago").timeago();
+  })
+  $("#menu").click(function(){
+    $(".brand").text("HOME");
+    $(".navbar ul li").removeClass("cate");
+    $(".navbar").toggle();
+  });
+  $(window).resize(function(){
+    if(window.innerWidth > 768) {
+      $(".navbar").removeAttr("style");
+    }
+  });
+</script>
+
+</body>
+</html>
+

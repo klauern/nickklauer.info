@@ -1,0 +1,174 @@
+<html lang="en">
+<head>
+
+  
+  <meta charset="utf-8">
+  <title>Stopping an EJB Programmatically</title>
+  <meta name="description" content="Stopping an EJB Programmatically">
+  <meta name="author" content="Nick Klauer">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/fonts.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/normalize.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/skeleton.css">
+  <link rel="stylesheet" href="http://blog.nickklauer.info//css/custom.css">
+
+  
+  
+  <link rel="stylesheet" href="http://blog.nickklauer.info//highlight/styles/default.css">
+  
+  <script src="http://blog.nickklauer.info//highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</head>
+<body>
+
+<header id="menu">
+  <div class="container">
+	<span class="logo">DevOps Confusion</span>
+	<a>&#9776;</a>
+  </div>
+</header>
+
+<nav class="navbar">
+  <div class="container">
+	<div class="row">
+	  <div class="eight columns offset-by-two">
+		<ul class="">
+		  
+		  <li class="u-pull-left"> <a href="http://blog.nickklauer.info/" class="brand" style="font-weight:bold;font-size:normal"> DevOps Confusion </a></li>
+		  <li class="u-pull-right cate"> <a href="http://blog.nickklauer.info//about/" class=""> About </a></li>
+		  
+		</ul>
+	  </div>
+	</div>
+  </div>
+</nav>
+
+
+<div class="container post-wrapper">
+  <div class="row">
+	<div class="eight columns offset-by-two">
+	  <div id="post-title">
+		<p class="footnote">
+		  
+		  <time class="">2012-10-23</time>
+		  
+		  
+		  
+
+		  
+
+		  
+
+		</p>
+		<h5>Stopping an EJB Programmatically</h5>
+	  </div>
+
+	  <div class="post">
+		<p>Below is a small story and a snippet or two of code to shut down an EJB programmatically. However, I hope that by posting what I did to dig in to this, I can show how you can use JMX and MBeans to your advantage programmatically for _any_MBean.</p>
+
+<p>In looking at <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/visualvm/index.html"> JVisualVM</a> (bundled with all JDK’s since recent Java 6 updates), I opened up the Glassfish server and looked up the MBeans that are deployed out there. The project I’m working with (and the class name) is <strong>VendorUpdateToTREES</strong>:</p>
+
+<p><a href="http://klauer.files.wordpress.com/2012/10/image001.png"><img src="http://klauer.files.wordpress.com/2012/10/image001.png" alt="" />
+</a></p>
+
+<p>In this bean, there’s another sub-bean:</p>
+
+<p><a href="http://klauer.files.wordpress.com/2012/10/image002.png"><img src="http://klauer.files.wordpress.com/2012/10/image002.png" alt="" />
+</a></p>
+
+<p>Its name is:</p>
+
+<p><a href="http://klauer.files.wordpress.com/2012/10/image003.png"><img src="http://klauer.files.wordpress.com/2012/10/image003.png" alt="" />
+</a></p>
+
+<p>Note the only difference between the two is the <strong>servermgt=true</strong> field.</p>
+
+<p>If you were to look at both beans, one shows controls the EJB itself, while the <strong>servermgt</strong> bean appears to control topics and queues. We won’t be needing that functionality, so we need to be sure to exclude this bean.</p>
+
+<p>Now, on to the code:</p>
+
+<p><a href="http://klauer.files.wordpress.com/2012/10/image004.png"><img src="http://klauer.files.wordpress.com/2012/10/image004.png" alt="" />
+</a></p>
+
+<p>Some reference bits:</p>
+
+<p>Sets#filter, is from Google Guava: <a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Sets.html#filter(java.util.Set,%20com.google.common.base.Predicate"> http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Sets.html#filter(java.util.Set, com.google.common.base.Predicate)</a>)</p>
+
+<p>ObjectNameStartsWithFilter, is a Predicate object that I implemented to do one simple thing: filter out ObjectNames that don’t start with the parameter passed in:</p>
+
+<p><a href="http://klauer.files.wordpress.com/2012/10/image005.png"><img src="http://klauer.files.wordpress.com/2012/10/image005.png" alt="" />
+</a></p>
+
+<p>That’s about as easy as a Predicate can get. Note that <strong>User:Name=</strong> is part of the name for our EJB:</p>
+
+<p><a href="http://klauer.files.wordpress.com/2012/10/image006.png"><img src="http://klauer.files.wordpress.com/2012/10/image006.png" alt="" />
+</a></p>
+
+<p>So, while I showed how I found the name to the MBean, the code to shut it down should be simple enough to copy/paste with no changes to <strong>any</strong> EJB deployed in Glassfish. I don’t know exactly how the MBeans look on Tomcat, WebLogic, or others, but the same principle applies in how it would be structured, so you could easily adapt this to other containers.</p>
+
+	  </div>
+	</div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="container">
+	<div class="row">
+	  <div class="ten columns offset-by-two">
+		<p class="footnote">
+		  
+		  Copyright (c) 2015, Nick Klauer; all rights reserved.
+		  
+		  
+		  Find me at
+
+		  
+		  <a href="https://github.com/klauern" >GitHub</a>
+		  
+
+		  
+		  <a href="https://www.facebook.com/nick.klauer">Facebook</a>
+		  
+
+		  
+		  <a href="https://twitter.com/klauern">Twitter</a>
+		  
+
+		  
+
+		  
+		</p>
+	  </div>
+	</div>
+  </div>
+</div>
+
+
+<script src="http://blog.nickklauer.info//js/jquery.min.js" type="text/javascript"></script>
+<script src="http://blog.nickklauer.info//js/jquery.timeago.js" type="text/javascript"></script>
+<script type="text/javascript">
+  $(function(){
+    $("time.timeago").timeago();
+  })
+  $("#menu").click(function(){
+    $(".brand").text("HOME");
+    $(".navbar ul li").removeClass("cate");
+    $(".navbar").toggle();
+  });
+  $(window).resize(function(){
+    if(window.innerWidth > 768) {
+      $(".navbar").removeAttr("style");
+    }
+  });
+</script>
+
+</body>
+</html>
+
